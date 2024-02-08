@@ -1,0 +1,1 @@
+A travel site built upon the idea of wanting to limit option fatigue. Destinations and activities are selected for the user based on provided answers to our quiz. Built using MySQL, Vue.js, and Spring Boot.
