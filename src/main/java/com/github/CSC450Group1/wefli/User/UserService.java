@@ -22,7 +22,14 @@ public class UserService {
 
         // check to see if the password passed in matches
         if (BCrypt.checkpw(info.getPassword(), hashPass)) {
-            return repository.findByEmail(info.getEmail()); // it matched
+            Optional<User> opUser = repository.findByEmail(info.getEmail());
+
+            // get the user from within the Optional<User>
+            User user = opUser.get();
+            user.setPassword(null); // set the password to null, so it is not returned with the object
+            opUser = Optional.of(user);
+
+            return opUser; // it matched
         } else {
             return Optional.empty(); // it didn't match
         }
