@@ -9,5 +9,4 @@ public class WefliApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WefliApplication.class, args);
 	}
-
 }

@@ -1,12 +1,19 @@
 package com.github.CSC450Group1.wefli.User;
 
-//import org.springframework.data.jpa.repository.Query;
-//import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-// extend CrudRepository<User, Integer>
-public interface UserRepository {
+import java.util.Optional;
 
-    // this is how to make custom SQL calls to the database
-//    @Query("SELECT a FROM User a WHERE a.email = ?1")
-//    User findByEmail(String email);
+@Repository
+public interface UserRepository extends CrudRepository<User, Integer>{
+    Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    // custom SQL Query
+    @Query(value = "SELECT password FROM user WHERE email = ?1", nativeQuery = true)
+    String findPasswordByEmail(String email);
+
 }

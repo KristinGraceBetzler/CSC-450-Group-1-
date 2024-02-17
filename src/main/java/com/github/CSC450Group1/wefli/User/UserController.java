@@ -6,19 +6,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 public class UserController {
-
     @Autowired
     private UserService userService;
-
-    @RequestMapping("/login/user")
-    public User getUser() {
-       return userService.getUser();
+    @RequestMapping(method = RequestMethod.POST, value = "/login/user")
+    public Optional<User> login(@RequestBody LoginInfo info) {
+        return userService.loginUser(info);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/create/user")
-    public boolean createUser(@RequestBody User user) {
+    public String createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 }

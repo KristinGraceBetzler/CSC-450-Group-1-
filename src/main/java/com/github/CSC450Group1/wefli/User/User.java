@@ -1,21 +1,29 @@
 package com.github.CSC450Group1.wefli.User;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 // annotate  with @Entity
+@Entity
 public class User {
     // annotate with @Id
+    @Id
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private int userID;
     private String firstName;
     private String lastName;
-    private int phoneNumber;
+    private String phoneNumber;
     private String email;
     private String address;
     private String userName;
     private String password;
 
-    public User (int userID, String firstName, String lastName, int phoneNumber, String email,
+    public User() {
+
+    }
+    public User (String firstName, String lastName, String phoneNumber, String email,
                  String address, String userName, String password) {
-        this.userID = userID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
@@ -37,7 +45,7 @@ public class User {
         return lastName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
@@ -57,10 +65,6 @@ public class User {
         return password;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
-
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -69,7 +73,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -87,5 +91,11 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return userID + " " + firstName + " " + lastName + " " + phoneNumber + " " + email + " " + address + " " + userName
+                + " " +password;
     }
 }
