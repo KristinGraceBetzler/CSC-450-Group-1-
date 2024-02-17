@@ -1,6 +1,13 @@
 # Default ignored files
 /shelf/
+
+# .idea folder #
 .idea
+
+#built classes#
 target/
 HELP.md
+
+# .env files #
+.env
 
