@@ -1,5 +1,7 @@
 package com.github.CSC450Group1.wefli.User;
 
+import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
+import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,5 +22,10 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST, value = "/create/user")
     public String createUser(@RequestBody User user) {
         return userService.createUser(user);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/update/user")
+    public boolean updateUser(@RequestBody UpdateInfo info) {
+        return userService.updateUserInfo(info);
     }
 }

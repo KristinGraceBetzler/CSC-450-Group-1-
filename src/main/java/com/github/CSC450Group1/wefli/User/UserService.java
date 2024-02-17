@@ -1,9 +1,15 @@
 package com.github.CSC450Group1.wefli.User;
 
+import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
+import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+
+/* Service layer to handle the different operations for a user account
+* such as logging in, creating a new account, updating their account,
+* email verification, and possibly more in the future. */
 
 @Service
 public class UserService {
@@ -50,6 +56,24 @@ public class UserService {
 
         repository.save(user); // add the user to the database
         return "Account Created";
+    }
+
+    public boolean updateUserInfo(UpdateInfo info) {
+        Optional<User> opUser = repository.findByEmail(info.getEmail()); // can be changed to find by ID if we choose
+
+        // get the user out of the Optional class
+        User user = opUser.get();
+
+        // update each of the vars in the user instance
+        user.setFirstName(info.getFirstName());
+        user.setLastName(info.getLastName());
+        user.setPhoneNumber(info.getPhoneNumber());
+        user.setAddress(info.getAddress());
+        user.setUserName(info.getUserName());
+
+        // save the updated user
+        repository.save(user);
+        return true;
     }
 
     /*

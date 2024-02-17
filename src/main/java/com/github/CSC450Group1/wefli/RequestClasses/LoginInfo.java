@@ -1,4 +1,4 @@
-package com.github.CSC450Group1.wefli.User;
+package com.github.CSC450Group1.wefli.RequestClasses;
 
 public class LoginInfo {
     private String email;
