@@ -1,0 +1,23 @@
+body {
+    background-color: #3cb8ba;
+    text-align: center;
+    font-size: larger;
+}
+button{
+    background-color: #3cba7d;
+    border: 2px solid #3c79ba;
+    border-radius: 20px 10px;
+    margin: 1em;
+    font-size: large;
+    font-weight: bold;
+    padding: 20px;
+}
+img{
+    max-height: 700px;
+}
+table {
+    margin: auto;
+}
+.Footer{
+    padding-top: 20px;
+}

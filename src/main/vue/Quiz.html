@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="Quiz.css">
+</head>
+<body>
+    <div class="Top">
+        <h1 id="Header">Travel Quiz</h1>
+    </div>
+
+    <div class="Quiz">
+        <table id="Question">
+            <tr>
+                <td>
+                    <img id="Avatar" :src="url" alt="User's avatar character">
+                </td>
+                <td id="Question">
+                    <p id="Question">{{ask}}</p>
+                    <button onclick="location.href='Results.html'">{{option_1}}</button> <!-- Debug onclick action -->
+                    <button onclick="location.href='Results.html'">{{option_2}}</button> <!-- Debug onclick action -->
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="Footer">
+        <button id="Quit" onclick="location.href='Profile.html'">Quit</button>
+        <button id="Restart" onclick="location.href='Quiz.html'">Restart</button>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js">
+    </script>
+
+    <script>
+        const Question = Vue.createApp({
+            data() {
+                return {
+                    url: "images/cartoon-2026705_1280.png",
+                    ask: "Has anyone really been far even as decided to use even go want to do look more like?",
+                    option_1: "Either",
+                    option_2: "Or"
+                }
+            }
+        })
+        Question.mount('#Question')
+    </script>
+</body>
+</html>

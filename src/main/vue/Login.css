@@ -1,0 +1,37 @@
+body {
+    background-color: #3cb8ba;
+    text-align: center;
+    button{
+        background-color: #3cba7d;
+        border: 2px solid #3c79ba;
+        border-radius: 20px 10px;
+        font-size: large;
+        font-weight: bold;
+        padding: 10px;
+    }
+    table {
+        margin: auto;
+        padding-top: 150px;
+        #Login {
+            padding: 10px;
+        }
+        #Submit{
+            background-color: #3cba7d;
+            border: 2px solid #3c79ba;
+            border-radius: 20px 10px;
+            font-size: large;
+            font-weight: bold;
+            padding: 20px;
+        }
+        #username{
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        #password{
+            margin-top: 10px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+    }
+}

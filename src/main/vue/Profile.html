@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="Profile.css">
+</head>
+<body>
+    <div class="Header">
+        <button id="Logout" onclick="location.href='Login.html'">Logout</button>
+    </div>
+    <div class="UserInfo">
+        <table id="UserData">
+            <tr>
+                <td>
+                    <img id="ProfileImage" :src="user" alt="Profile photo"> <!-- Profile photo taken from database AND to be Avatar -->
+                </td>
+                <td>
+                    <p>{{ username }}</p>
+                    <p>{{ email }}</p>
+                    <p>{{preference_1}}</p>
+                    <p>{{preference_2}}</p>
+                </td>
+                <td id="Settings"> <!-- Buttons may change depending on need -->
+                    <button>Settings</button> <br> <!-- Onclick: popup form allowing user to update info -->
+                    <button onclick="location.href='Quiz.html'">Trip Quiz</button> <br> <!-- Need Quiz intro page before starting quiz -->
+                    <button>Trips</button> <br> <!-- Necessary? Trips are already on profile -->
+                    <button>Companions</button> <!-- Onclick: shows list of up to 5 companions and their avatar -->
+                </td>
+        </table>
+    </div>
+
+    <div class="Divider">
+        <hr>
+    </div>
+
+    <div class="Trip">
+        <table id="TripData"> <!-- TripData will be repeated on page as many times as requried, depending on how many trips user has booked -->
+            <tr>
+                <td>
+                    <img :src="city" alt="map of city"> <!-- taken from database -->
+                </td>
+                <td>
+                    <h1 id="Location">{{ location }}</h1> <br>
+                    <p id="DestinationDescription">{{ description }}</p>
+                    <br><br>
+                    <h3>Activities to do:</h3> <br>
+                    <p v-for="(x, index) in activities">
+                        {{ index + 1 }}: {{ x.activity }} <br>
+                    </p>
+                </td>
+                <td> <!-- buttons may not be neccessary; unknown use -->
+                    <button>Button 1</button> <br>
+                    <button>Button 2</button> <br>
+                    <button>Button 3</button> <br>
+                    <button>Button 4</button> <br>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    </script>
+
+    <script>
+
+        const UserData = Vue.createApp({
+            data() {
+                return {
+                    user: "images/thispersondoesnotexist.jpg",
+                    username: "TestUsrNme",
+                    email: "123@test.com",
+                    preference_1: "USA",
+                    preference_2: "Delta"
+                }
+            }
+        })
+
+        const TripData = Vue.createApp({
+            data() {
+                return {
+                    city: "images/CityMap.png",
+                    location: "TestLocation",
+                    description: "Location description. This text will be updated to reflect a description of the vacation destination",
+                    activities: [
+                        {activity: 'Camping'},
+                        {activity: 'Fine Dining'},
+                        {activity: 'Fireworks'}
+                    ]
+                }
+            }
+        })
+
+        TripData.mount('#TripData')        
+        UserData.mount('#UserData')
+    </script>
+
+    <script>
+
+    </script>
+</body>
+</html>
