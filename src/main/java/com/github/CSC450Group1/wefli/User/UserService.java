@@ -1,11 +1,14 @@
 package com.github.CSC450Group1.wefli.User;
 
 import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
+import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
+import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
+import java.util.Random;
 
 /* Service layer to handle the different operations for a user account
 * such as logging in, creating a new account, updating their account,
@@ -55,6 +58,7 @@ public class UserService {
         user.setPassword(hashed_password);
 
         repository.save(user); // add the user to the database
+        sendVerificationCode(user);
         return "Account Created";
     }
 
@@ -76,12 +80,57 @@ public class UserService {
         return true;
     }
 
-    /*
-    * Going to add email verification here
-    * using JavaMail in spring boot. Have to add a verification string which is randomly generated to user
-    * account as well as boolean on whether it has been verified or not. Additionally, will need to
-    * set up an endpoint within the controller that the verification button will take them too and
-    * pass the verification string as get request to the endpoint. I can then update the boolean within the user
-    * account to show that it has been verified and they can log in. Will also have to update the login method
-    * within this class to check to see whether the user has verified their email or not.*/
+    public boolean updatePassword(PasswordUpdate info) {
+        // get the user we are trying to update the password for
+        Optional<User> opUser = repository.findByEmail(info.getEmail());
+        User user = opUser.get();
+
+        // check to make sure the old password matches what the current password is
+        if (!BCrypt.checkpw(info.getOldPassword(), user.getPassword())) {
+            return false; // old password doesn't match so don't update the password
+        }
+
+        // hash the new password
+        String salt = BCrypt.gensalt(13); // create a salt
+        String hashed_password = BCrypt.hashpw(info.getNewPassword(), salt); // create the hashed password
+
+        // update the users password
+        user.setPassword(hashed_password);
+        repository.save(user);
+
+        return true;
+    }
+
+    // for use from the createUser method
+    // since we already have a user created have separate methods will lower database queries
+    private void sendVerificationCode(User user) {
+
+    }
+    // for use if the user needs to resend a verification code
+    public void sendVerificationCode(String email) {
+        // get the user with the given email
+        Optional<User> opUser = repository.findByEmail(email);
+        if (opUser.isEmpty()) {
+            return;
+        }
+        User user = opUser.get();
+
+        // generate a random 6-digit code to send and store
+        int max = 999999;
+        int min = 100000;
+        int randInt = min + (int)(Math.random() * ((max-min) + 1));
+
+        user.setVerificationCode(randInt);
+
+        // set up the properties for the email
+        String toAddress = user.getEmail();
+        String fromAddress = "WeFli@gmail.com";
+        String senderName = "WeFli";
+        String subject = "Please complete your registration";
+        String content = "Welcome to WeFli " + user.getFirstName() + "!<br><br>" +
+                "Here is your verification code to complete your account registration:<br>" + randInt +
+                "<br><br>Thank you from the WeFli team!";
+
+
+    }
 }

@@ -18,6 +18,8 @@ public class User {
     private String address;
     private String userName;
     private String password;
+    private int verificationCode;
+    private boolean verified;
 
     public User() {
 
@@ -64,6 +66,12 @@ public class User {
     public String getPassword() {
         return password;
     }
+    public int getVerificationCode() {
+        return verificationCode;
+    }
+    public boolean isVerified() {
+        return verified;
+    }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -91,6 +99,12 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setVerificationCode(int verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 
     @Override
