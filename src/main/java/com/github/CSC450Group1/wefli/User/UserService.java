@@ -196,4 +196,11 @@ public class UserService {
             return false;
         }
     }
+
+    public boolean deleteUser(String email) {
+        Optional<User> opUser = repository.findByEmail(email);
+        User user = opUser.get();
+        repository.delete(user);
+        return true;
+    }
 }

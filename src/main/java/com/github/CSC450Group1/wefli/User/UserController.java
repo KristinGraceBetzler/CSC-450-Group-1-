@@ -50,5 +50,8 @@ public class UserController {
         }
     }
 
-    
+    @RequestMapping(method = RequestMethod.DELETE, value = "/user/delete")
+    public boolean deleteUser(@RequestBody String email) {
+        return userService.deleteUser(email);
+    }
 }
