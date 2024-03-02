@@ -3,6 +3,7 @@ package com.github.CSC450Group1.wefli.User;
 import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
+import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +31,11 @@ public class UserController {
         return userService.updateUserInfo(info);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/update/password")
+    @RequestMapping(method = RequestMethod.PUT, value = "/update/userPassword")
     public boolean updatePassword(@RequestBody PasswordUpdate info) {
         return userService.updatePassword(info);
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/user/verify")
+    public boolean verifyUser(@RequestBody VerifyInfo verifyInfo) {return userService.verifyUser(verifyInfo);}
 }

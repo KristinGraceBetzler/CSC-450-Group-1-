@@ -3,10 +3,17 @@ package com.github.CSC450Group1.wefli.User;
 import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
+import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 import java.util.Random;
 
@@ -19,6 +26,8 @@ public class UserService {
 
     @Autowired
     private UserRepository repository;
+    @Autowired
+    private JavaMailSender sender;
 
     public Optional<User> loginUser(LoginInfo info) {
         // check to make sure there is an account with the given email
@@ -57,9 +66,14 @@ public class UserService {
         // Update the users password to be the BCrypt hashed password
         user.setPassword(hashed_password);
 
-        repository.save(user); // add the user to the database
-        sendVerificationCode(user);
-        return "Account Created";
+        try {
+            int verificationCode = sendVerificationCode(user); // send the verification email and get the code
+            user.setVerificationCode(verificationCode);
+            repository.save(user); // add the user to the database
+            return "Account Created";
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public boolean updateUserInfo(UpdateInfo info) {
@@ -103,11 +117,20 @@ public class UserService {
 
     // for use from the createUser method
     // since we already have a user created have separate methods will lower database queries
-    private void sendVerificationCode(User user) {
+    private int sendVerificationCode(User user) throws MessagingException, UnsupportedEncodingException {
+        // generate a random 6-digit code to send and store
+        int max = 999999;
+        int min = 100000;
+        int verificationCode = min + (int)(Math.random() * ((max-min) + 1));
 
+        // set up the properties for the email
+        MimeMessage verificationMessage = getMimeMailMessage(user, verificationCode);
+        // send the email
+        sender.send(verificationMessage);
+        return verificationCode;
     }
     // for use if the user needs to resend a verification code
-    public void sendVerificationCode(String email) {
+    public void sendVerificationCode(String email) throws MessagingException, UnsupportedEncodingException {
         // get the user with the given email
         Optional<User> opUser = repository.findByEmail(email);
         if (opUser.isEmpty()) {
@@ -118,19 +141,52 @@ public class UserService {
         // generate a random 6-digit code to send and store
         int max = 999999;
         int min = 100000;
-        int randInt = min + (int)(Math.random() * ((max-min) + 1));
+        int verificationCode = min + (int)(Math.random() * ((max-min) + 1));
 
-        user.setVerificationCode(randInt);
+        // update the verification code within the users info
+        user.setVerificationCode(verificationCode);
+        repository.save(user);
 
         // set up the properties for the email
+        MimeMessage verificationMessage = getMimeMailMessage(user, verificationCode);
+
+        // send the email
+        sender.send(verificationMessage);
+    }
+
+    private MimeMessage getMimeMailMessage(User user, int randInt) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
-        String fromAddress = "WeFli@gmail.com";
+        String fromAddress = "WeFliGroup1@gmail.com";
         String senderName = "WeFli";
         String subject = "Please complete your registration";
-        String content = "Welcome to WeFli " + user.getFirstName() + "!<br><br>" +
-                "Here is your verification code to complete your account registration:<br>" + randInt +
-                "<br><br>Thank you from the WeFli team!";
+        String content = "<h1>Welcome to WeFli " + user.getFirstName() + "!</h1><br/>" +
+                "<h2>Here is your verification code to complete your account registration:</h2> <h2>" + randInt +
+                "</h2><br><br><h3>Thank you,<br>from the WeFli team!</h3>";
 
+        // Create the email message
+        MimeMessage verificationMessage = sender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(verificationMessage);
 
+        messageHelper.setFrom(fromAddress, senderName);
+        messageHelper.setTo(toAddress);
+        messageHelper.setSubject(subject);
+
+        messageHelper.setText(content, true);
+        return verificationMessage;
+    }
+
+    public boolean verifyUser(VerifyInfo info) {
+        // get the user
+        Optional<User> opUser = repository.findByEmail(info.getEmail());
+        User user = opUser.get();
+
+        // check to see if the verification codes match
+        if (info.getVerificationCode() == user.getVerificationCode()) {
+            user.setVerified(true); // set the account status to verified
+            repository.save(user);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
