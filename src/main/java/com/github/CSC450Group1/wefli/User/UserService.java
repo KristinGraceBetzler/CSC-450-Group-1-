@@ -44,10 +44,16 @@ public class UserService {
 
             // get the user from within the Optional<User>
             User user = opUser.get();
-            user.setPassword(null); // set the password to null, so it is not returned with the object
-            opUser = Optional.of(user);
 
-            return opUser; // it matched
+            // check to see if the user has verified their account
+            if (user.isVerified()) {
+                user.setPassword(null); // set the password to null, so it is not returned with the object
+                opUser = Optional.of(user);
+                return opUser; // it matched
+            } else {
+                return Optional.empty(); // don't return the user if they are unverified
+            }
+
         } else {
             return Optional.empty(); // it didn't match
         }
@@ -176,6 +182,7 @@ public class UserService {
     }
 
     public boolean verifyUser(VerifyInfo info) {
+        if (!repository.existsByEmail(info.getEmail())) {return false;} // return false if user does not exist
         // get the user
         Optional<User> opUser = repository.findByEmail(info.getEmail());
         User user = opUser.get();
