@@ -11,25 +11,9 @@ CREATE TABLE IF NOT EXISTS User (
     Email VARCHAR(100),
     Address VARCHAR(100),
     User_Name VARCHAR(100),
-    Password VARCHAR(100)
-);
-
--- Create User_Content Table
-CREATE TABLE IF NOT EXISTS User_Content (
-    User_Content_ID INT PRIMARY KEY,
-    User_ID INT,
-    User_Post VARCHAR(100),
-    Comment_ID INT,
-    FOREIGN KEY (User_ID) REFERENCES User(User_ID),
-    FOREIGN KEY (Comment_ID) REFERENCES Comment(Comment_ID)
-);
-
--- Create Quiz Table
-CREATE TABLE IF NOT EXISTS Quiz (
-    Quiz_ID INT PRIMARY KEY,
-    Quiz_Question VARCHAR(100),
-    Quiz_Option_1 VARCHAR(100),
-    Quiz_Option_2 VARCHAR(100)
+    Password VARCHAR(100),
+    Verification_Code INT,
+    Verified TINYINT(1) NOT NULL
 );
 
 -- Create Comments Table
@@ -40,19 +24,22 @@ CREATE TABLE IF NOT EXISTS Comments (
     FOREIGN KEY (User_ID) REFERENCES User(User_ID)
 );
 
--- Create Trip Table
-CREATE TABLE IF NOT EXISTS Trip (
-    Trip_ID INT PRIMARY KEY,
+-- Create User_Content Table
+CREATE TABLE IF NOT EXISTS User_Content (
+    User_Content_ID INT PRIMARY KEY,
     User_ID INT,
-    Flight_ID INT,
-    Hotel_ID INT,
-    Destination_ID INT,
+    User_Post VARCHAR(100),
     Comment_ID INT,
     FOREIGN KEY (User_ID) REFERENCES User(User_ID),
-    FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID),
-    FOREIGN KEY (Hotel_ID) REFERENCES Hotels(Hotel_ID),
-    FOREIGN KEY (Destination_ID) REFERENCES Destinations(Destination_ID),
-    FOREIGN KEY (Comment_ID) REFERENCES Comments(CommentID)
+    FOREIGN KEY (Comment_ID) REFERENCES Comments(Comment_ID)
+);
+
+-- Create Quiz Table
+CREATE TABLE IF NOT EXISTS Quiz (
+    Quiz_ID INT PRIMARY KEY,
+    Quiz_Question VARCHAR(100),
+    Quiz_Option_1 VARCHAR(100),
+    Quiz_Option_2 VARCHAR(100)
 );
 
 -- Create Hotels Table
@@ -88,6 +75,20 @@ CREATE TABLE IF NOT EXISTS Destinations (
     DestinationClimate VARCHAR(100)
 );
 
+-- Create Trip Table
+CREATE TABLE IF NOT EXISTS Trip (
+    Trip_ID INT PRIMARY KEY,
+    User_ID INT,
+    Flight_ID INT,
+    Hotel_ID INT,
+    Destination_ID INT,
+    Comment_ID INT,
+    FOREIGN KEY (User_ID) REFERENCES User(User_ID),
+    FOREIGN KEY (Flight_ID) REFERENCES Flight(Flight_ID),
+    FOREIGN KEY (Hotel_ID) REFERENCES Hotels(Hotel_ID),
+    FOREIGN KEY (Destination_ID) REFERENCES Destinations(Destination_ID),
+    FOREIGN KEY (Comment_ID) REFERENCES Comments(Comment_ID)
+);
 
 -- Create Excursions Table 
 CREATE TABLE IF NOT EXISTS Excursions(
