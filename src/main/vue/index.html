@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeFli Login</title>
+    <link rel="stylesheet" href="Login.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create an account</h2>
+
+            <form class="signUpForm" action="index.html">
+                <table class="img">
+                    <tr>
+                        <td><img class="loginImg" src="images/CreateAccount.png" alt="laptop with travel website"></td>
+                        <td>
+                            <table class="modalTable">
+                                <tr>
+                                    <td> <label for="email">Enter your email address:</label> </td>
+                                    <td> <input type="email" id="email" name="email" placeholder="your@email.com" requried> </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="username">Enter a username:</label> </td>
+                                    <td> <input type="text" id="username" name="username" placeholder="Username" required> </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="password">Enter a password:</label> </td>
+                                    <td> <input type="password" id="password" name="password" placeholder="Password" requried>
+                                        <span class="eye" onclick="showHide()">
+                                            <i id="eye1" class="fa fa-eye"></i>
+                                            <i id="slash1" class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> <label for="confirmPassword">Confirm Password:</label> </td>
+                                    <td> <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Password" required>
+                                        <span class="eye" onclick="showHide2()">
+                                            <i id="eye2" class="fa fa-eye"></i>
+                                            <i id="slash2" class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+
+                <input type="submit" id="Submit" value="Create Account" onclick="createAccount()">
+            </form>
+            <p>By creating an account you agree to the terms and conditions</p>
+        </div>
+    </div>
+
+    <div class="Table">
+        <table>
+            <tr>
+                <td id="Avatar">
+                    <img id="Image" src="images/Default_Avatar4.jpg" alt="default avatar"> <!-- White background of photo needs to be removed -->
+                </td>
+                <td id="Login">
+                    <form id="Form" action="Profile.html"> <!-- {method ="post"} to be added and handled by backend -->
+
+                        <input type="text" id="username" name="username" placeholder="Username" required> <br>
+
+                        <input type="password" id="password1" name="password" placeholder="Password" required>
+                        <span class="eye" onclick="showHide3()">
+                            <i id="eye3" class="fa fa-eye"></i>
+                            <i id="slash3" class="fa fa-eye-slash"></i>
+                        </span>
+                        <br><br>
+
+                        <input id="Submit" type="submit" value="Sign In"> <br>
+                    </form>
+                    <br><br>
+                    <h2>New User?</h2>
+                    <button id="signUp">Sign Up</button>
+                </td>
+            </tr>
+        </table>
+        <h1>Together, WeFli</h1>
+        <p>Join the over 3 people who have used our booking services and gone on to live
+            (mostly) normal lives!
+        </p>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("modal")
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("signUp")
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block"
+        }
+
+        // When the user click on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function showHide() {
+            var x = document.getElementById("password")
+            var y = document.getElementById("eye1")
+            var z = document.getElementById("slash1")
+
+            if (x.type === 'password') {
+                x.type = "text"
+                y.style.display = "block"
+                z.style.display = "none"
+            }
+            else {
+                x.type = "password"
+                y.style.display = "none"
+                z.style.display = "block"
+            }
+        }
+
+        function showHide2() {
+            var x = document.getElementById("confirmPassword")
+            var y = document.getElementById("eye2")
+            var z = document.getElementById("slash2")
+            if (x.type === 'password') {
+                x.type = "text"
+                y.style.display = "block"
+                z.style.display = "none"
+            }
+            else {
+                x.type = "password"
+                y.style.display = "none"
+                z.style.display = "block"
+            }
+        }
+
+        function showHide3() {
+            var x = document.getElementById("password1")
+            var y = document.getElementById("eye3")
+            var z = document.getElementById("slash3")
+            if (x.type === 'password') {
+                x.type = "text"
+                y.style.display = "block"
+                z.style.display = "none"
+            }
+            else {
+                x.type = "password"
+                y.style.display = "none"
+                z.style.display = "block"
+            }
+        }
+
+        function createAccount() {
+            email = document.getElementById("email").value
+            username = document.getElementById("username").value
+            password = document.getElementById("password").value
+            confirmPassword = document.getElementById("confirmPassword").value
+
+            if (password != confirmPassword) {
+                alert("your passwords do not match!")
+                return
+            }
+
+            if (validate_email(email) == false || validate_password(password) == false) {
+                alert("Email or Password is invalid!")
+                return
+            }
+            alert("Account Created!")
+            //TODO: Need to connect email, password info to server
+        }
+
+        function validate_email(email) {
+            const regex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/
+            if (regex.test(email) == false) {
+                console.log("email invalid")
+            }
+            return regex.test(email)
+        }
+
+        function validate_password(password) {
+            const regex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
+            if (regex.test(password) == false) {
+                console.log("password invalid")
+            }
+            return regex.test(password)
+        }
+    </script>
+</body>
+
+</html>
