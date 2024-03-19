@@ -7,8 +7,53 @@
     <link rel="stylesheet" href="Profile.css">
 </head>
 <body>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Profile Settings</h2>
+            <form action="Profile.html" class="settingsForm">
+                <table class="settingsTable">
+                    <tr>
+                        <td> <h3>Username</h3> </td>
+                        <td> <input type="text" class="input" value="TestUsrNme"> </td>
+                    </tr>
+                    <tr>
+                        <td> <h3>Email</h3> </td>
+                        <td> <input type="email" class="input" value="123@test.com"> </td>
+                    </tr>
+                    <tr>
+                        <td> <h3>Password</h3> </td>
+                        <td> <input type="password" class="input" placeholder="New Password"> </td>
+                    </tr>
+                    <tr>
+                        <td> <h3>Country of travel</h3> </td>
+                        <td> <select name="country" id="country"> <option value="USA">USA</option> </select> </td>
+                    </tr>
+                    <tr>
+                        <td> <h3>Preferred Flight Carrier</h3> </td>
+                        <td>
+                            <select name="carrier" id="carrier">
+                                <option value="alaska">Alaska</option>
+                                <option value="american">American</option>
+                                <option value="delta">Delta</option>
+                                <option value= "frontier">Frontier</option>
+                                <option value="jetBlue">Jet Blue</option>
+                                <option value="southwest">Southwest</option>
+                                <option value="spirit">Spirit (ew)</option>
+                                <option value="sunCountry">Sun Country</option>
+                                <option value="united">United</option>
+                        </td>
+                    </tr>
+                </table>
+                <input type="submit" id="submit" value="Save Settings">
+            </form>
+
+        </div>
+    </div>
+
     <div class="Header">
-        <button id="Logout" onclick="location.href='Login.html'">Logout</button>
+        <button id="Logout" onclick="location.href='index.html'">Logout</button>
     </div>
     <div class="UserInfo">
         <table id="UserData">
@@ -23,7 +68,7 @@
                     <p>{{preference_2}}</p>
                 </td>
                 <td id="Settings"> <!-- Buttons may change depending on need -->
-                    <button>Settings</button> <br> <!-- Onclick: popup form allowing user to update info -->
+                    <button id="settings">Settings</button> <br> <!-- Onclick: popup form allowing user to update info -->
                     <button onclick="location.href='Quiz.html'">Trip Quiz</button> <br> <!-- Need Quiz intro page before starting quiz -->
                     <button>Trips</button> <br> <!-- Necessary? Trips are already on profile -->
                     <button>Companions</button> <!-- Onclick: shows list of up to 5 companions and their avatar -->
@@ -92,8 +137,34 @@
             }
         })
 
-        TripData.mount('#TripData')        
+        TripData.mount('#TripData')
         UserData.mount('#UserData')
+
+        // Get the modal
+        var modal = document.getElementById("modal")
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("settings")
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.style.display = "block"
+        }
+
+        // When the user click on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 
     <script>

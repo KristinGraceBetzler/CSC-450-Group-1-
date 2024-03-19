@@ -15,12 +15,22 @@
         <table id="Question">
             <tr>
                 <td>
-                    <img id="Avatar" :src="url" alt="User's avatar character">
+                    <!-- <img id="Avatar" :src="url" alt="User's avatar character"> -->
+                    <img src="images/Assistant2.png" alt="">
                 </td>
                 <td id="Question">
-                    <p id="Question">{{ask}}</p>
-                    <button onclick="location.href='Results.html'">{{option_1}}</button> <!-- Debug onclick action -->
-                    <button onclick="location.href='Results.html'">{{option_2}}</button> <!-- Debug onclick action -->
+                    <span id="intro">
+                        <p>
+                            Welcome to your personalized trip quiz questionnaire!
+                            By asking a few questions, we hope to provide you with an ideal vacation location!
+                        </p>
+                        <button id="begin">Begin!</button>
+                    </span>
+                    <span id="quizQuestion" class="quizQuestion">
+                        <p id="Question">{{ ask }}</p>
+                        <button id="option1">{{ option_1 }}</button> <!-- Debug onclick action -->
+                        <button id="option2">{{ option_2 }}</button> <!-- Debug onclick action -->
+                    </span>
                 </td>
             </tr>
         </table>
@@ -39,13 +49,72 @@
             data() {
                 return {
                     url: "images/cartoon-2026705_1280.png",
-                    ask: "Has anyone really been far even as decided to use even go want to do look more like?",
-                    option_1: "Either",
-                    option_2: "Or"
+                    ask: "Do you prefer warmer or cooler climates?",
+                    option_1: "Warmer",
+                    option_2: "Cooler"
                 }
             }
         })
         Question.mount('#Question')
+    </script>
+    <script>
+        //get the span object
+        var span = document.getElementById("intro")
+        //get quizQuestion span object
+        var question = document.getElementById("quizQuestion")
+        //get Question text object
+        var q = document.getElementById("Question")
+        //get button that hides intro
+        var btn = document.getElementById("begin")
+        //get question option buttons
+        var op1 = document.getElementById("option1")
+        var op2 = document.getElementById("option2")
+
+        var ask = [
+            "test question 2",
+            "test question 3",
+            "test question 4",
+            "test question 5",
+            "test question 6",
+            "test question 7",
+            "test question 8",
+            "test question 9",
+            "test question 10"
+        ]
+
+        //make count for # of questions asked
+        var count = 0
+        //make variable for holding question tags
+        var tags = []
+
+        btn.onclick = function() {
+            span.style.display = "none"
+            question.style.display = "block"
+        }
+
+        op1.onclick = function() {
+            count++
+            console.log("count increased to " + count)
+            console.log("user clicked " + op1.textContent)
+            tags.push(op1.textContent)
+
+            if (count == 10) {
+                location.href="Results.html"
+                console.log(tags)
+            }
+        }
+
+        op2.onclick = function() {
+            count++
+            console.log("count increased to " + count)
+            console.log("user clicked " + op2.textContent)
+            tags.push(op2.textContent)
+
+            if (count == 10) {
+                location.href="Results.html"
+                console.log(tags)
+            }
+        }
     </script>
 </body>
 </html>
