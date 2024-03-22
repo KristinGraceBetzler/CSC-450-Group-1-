@@ -6,42 +6,40 @@ import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
-    @RequestMapping(method = RequestMethod.POST, value = "/user/login")
+    @PostMapping("/login")
     public Optional<User> login(@RequestBody LoginInfo info) {
         return userService.loginUser(info);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/user/create")
+    @PostMapping("/create")
     public String createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/update")
+    @PutMapping("/update")
     public boolean updateUser(@RequestBody UpdateInfo info) {
         return userService.updateUserInfo(info);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/updatePassword")
+    @PutMapping("/updatePassword")
     public boolean updatePassword(@RequestBody PasswordUpdate info) {
         return userService.updatePassword(info);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/verify")
+    @PutMapping("/verify")
     public boolean verifyUser(@RequestBody VerifyInfo verifyInfo) {return userService.verifyUser(verifyInfo);}
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/user/resendVerification") // email sent as plain text
+    @PutMapping("resendVerification")// email sent as plain text
     public void resendVerification(@RequestBody String email) {
         try {
             userService.sendVerificationCode(email);
@@ -50,7 +48,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/user/delete")
+    @DeleteMapping("delete") // send email as plain text
     public boolean deleteUser(@RequestBody String email) {
         return userService.deleteUser(email);
     }
