@@ -195,6 +195,10 @@ public class UserService {
         }
     }
 
+    /*
+    * Need to update this as more things are built
+    * will need to delete every trip and comment that is associated with the user
+    * before deleting the user. Will revisit this when comments are done*/
     public boolean deleteUser(String email) {
         Optional<Users> opUser = repository.findByEmail(email);
         Users user = opUser.get();

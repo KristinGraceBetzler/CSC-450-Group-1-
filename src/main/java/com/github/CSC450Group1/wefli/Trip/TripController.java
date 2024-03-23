@@ -1,4 +1,5 @@
 package com.github.CSC450Group1.wefli.Trip;
+import com.github.CSC450Group1.wefli.RequestClasses.SelectedDestination;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.Destinations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,5 +13,10 @@ public class TripController {
     @PostMapping("/nextDestination")
     public Destinations nextDestination(@RequestBody int id) {
         return tripService.getDestination(id);
+    }
+
+    @PutMapping("/selectDestination")
+    public void selectDestination(@RequestBody SelectedDestination info) {
+        tripService.selectDestination(info);
     }
 }

@@ -1,7 +1,10 @@
 package com.github.CSC450Group1.wefli.Trip;
 
+import com.github.CSC450Group1.wefli.RequestClasses.SelectedDestination;
 import com.github.CSC450Group1.wefli.Trip.Repositries.DestinationRepository;
+import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.Destinations;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,8 @@ public class TripService {
 
     @Autowired
     DestinationRepository destinationRepository;
+    @Autowired
+    TripRepository tripRepository;
 
     protected Destinations getDestination(int id) {
         id++; // increment ID to get the next destination
@@ -22,5 +27,13 @@ public class TripService {
         // get the destination and extract it from the optional
         Optional<Destinations> opDestination = destinationRepository.findById(id);
         return opDestination.get();
+    }
+
+    protected void selectDestination(SelectedDestination info) {
+        // create a trip object with the given info to start building a trip for the user
+        Trip newTrip = new Trip(info.getUsersID(), info.getDestinationID());
+
+        // save the trip
+        tripRepository.save(newTrip);
     }
 }
