@@ -16,7 +16,7 @@ public class TripController {
     }
 
     @PutMapping("/selectDestination")
-    public void selectDestination(@RequestBody SelectedDestination info) {
-        tripService.selectDestination(info);
+    public int selectDestination(@RequestBody SelectedDestination info) {
+        return tripService.selectDestination(info);
     }
 }
