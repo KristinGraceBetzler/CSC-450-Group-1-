@@ -17,12 +17,12 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping("/login")
-    public Optional<User> login(@RequestBody LoginInfo info) {
+    public Optional<Users> login(@RequestBody LoginInfo info) {
         return userService.loginUser(info);
     }
 
     @PostMapping("/create")
-    public String createUser(@RequestBody User user) {
+    public String createUser(@RequestBody Users user) {
         return userService.createUser(user);
     }
 

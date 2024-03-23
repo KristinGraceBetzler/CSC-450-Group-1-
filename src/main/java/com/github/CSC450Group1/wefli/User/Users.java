@@ -6,11 +6,11 @@ import jakarta.persistence.Id;
 
 // annotate  with @Entity
 @Entity
-public class User {
+public class Users {
     // annotate with @Id
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
-    private int userID;
+    private int usersID;
     private String firstName;
     private String lastName;
     private String phoneNumber;
@@ -21,10 +21,10 @@ public class User {
     private int verificationCode;
     private boolean verified;
 
-    public User() {
+    public Users() {
 
     }
-    public User (String firstName, String lastName, String phoneNumber, String email,
+    public Users(String firstName, String lastName, String phoneNumber, String email,
                  String address, String userName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -36,7 +36,7 @@ public class User {
     }
 
     public int getUserID() {
-        return userID;
+        return usersID;
     }
 
     public String getFirstName() {
@@ -109,7 +109,7 @@ public class User {
 
     @Override
     public String toString() {
-        return userID + " " + firstName + " " + lastName + " " + phoneNumber + " " + email + " " + address + " " + userName
+        return usersID + " " + firstName + " " + lastName + " " + phoneNumber + " " + email + " " + address + " " + userName
                 + " " +password;
     }
 }

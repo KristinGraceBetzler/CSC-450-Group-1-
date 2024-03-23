@@ -8,14 +8,12 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
-import java.util.Random;
 
 /* Service layer to handle the different operations for a user account
 * such as logging in, creating a new account, updating their account,
@@ -29,7 +27,7 @@ public class UserService {
     @Autowired
     private JavaMailSender sender;
 
-    public Optional<User> loginUser(LoginInfo info) {
+    public Optional<Users> loginUser(LoginInfo info) {
         // check to make sure there is an account with the given email
         if (!repository.existsByEmail(info.getEmail())) {
             return Optional.empty(); // The user does not have an account with that email
@@ -40,10 +38,10 @@ public class UserService {
 
         // check to see if the password passed in matches
         if (BCrypt.checkpw(info.getPassword(), hashPass)) {
-            Optional<User> opUser = repository.findByEmail(info.getEmail());
+            Optional<Users> opUser = repository.findByEmail(info.getEmail());
 
             // get the user from within the Optional<User>
-            User user = opUser.get();
+            Users user = opUser.get();
 
             // check to see if the user has verified their account
             if (user.isVerified()) {
@@ -59,7 +57,7 @@ public class UserService {
         }
     }
 
-    public String createUser(User user) {
+    public String createUser(Users user) {
         // Check if the account already exists with that email
         if (repository.existsByEmail(user.getEmail())) {
             return "Account Exists"; // the account exists
@@ -83,10 +81,10 @@ public class UserService {
     }
 
     public boolean updateUserInfo(UpdateInfo info) {
-        Optional<User> opUser = repository.findByEmail(info.getEmail()); // can be changed to find by ID if we choose
+        Optional<Users> opUser = repository.findByEmail(info.getEmail()); // can be changed to find by ID if we choose
 
         // get the user out of the Optional class
-        User user = opUser.get();
+        Users user = opUser.get();
 
         // update each of the vars in the user instance
         user.setFirstName(info.getFirstName());
@@ -102,8 +100,8 @@ public class UserService {
 
     public boolean updatePassword(PasswordUpdate info) {
         // get the user we are trying to update the password for
-        Optional<User> opUser = repository.findByEmail(info.getEmail());
-        User user = opUser.get();
+        Optional<Users> opUser = repository.findByEmail(info.getEmail());
+        Users user = opUser.get();
 
         // check to make sure the old password matches what the current password is
         if (!BCrypt.checkpw(info.getOldPassword(), user.getPassword())) {
@@ -123,7 +121,7 @@ public class UserService {
 
     // for use from the createUser method
     // since we already have a user created have separate methods will lower database queries
-    private int sendVerificationCode(User user) throws MessagingException, UnsupportedEncodingException {
+    private int sendVerificationCode(Users user) throws MessagingException, UnsupportedEncodingException {
         // generate a random 6-digit code to send and store
         int max = 999999;
         int min = 100000;
@@ -138,11 +136,11 @@ public class UserService {
     // for use if the user needs to resend a verification code
     public void sendVerificationCode(String email) throws MessagingException, UnsupportedEncodingException {
         // get the user with the given email
-        Optional<User> opUser = repository.findByEmail(email);
+        Optional<Users> opUser = repository.findByEmail(email);
         if (opUser.isEmpty()) {
             return;
         }
-        User user = opUser.get();
+        Users user = opUser.get();
 
         // generate a random 6-digit code to send and store
         int max = 999999;
@@ -160,7 +158,7 @@ public class UserService {
         sender.send(verificationMessage);
     }
 
-    private MimeMessage getMimeMailMessage(User user, int randInt) throws MessagingException, UnsupportedEncodingException {
+    private MimeMessage getMimeMailMessage(Users user, int randInt) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "WeFliGroup1@gmail.com";
         String senderName = "WeFli";
@@ -184,8 +182,8 @@ public class UserService {
     public boolean verifyUser(VerifyInfo info) {
         if (!repository.existsByEmail(info.getEmail())) {return false;} // return false if user does not exist
         // get the user
-        Optional<User> opUser = repository.findByEmail(info.getEmail());
-        User user = opUser.get();
+        Optional<Users> opUser = repository.findByEmail(info.getEmail());
+        Users user = opUser.get();
 
         // check to see if the verification codes match
         if (info.getVerificationCode() == user.getVerificationCode()) {
@@ -198,8 +196,8 @@ public class UserService {
     }
 
     public boolean deleteUser(String email) {
-        Optional<User> opUser = repository.findByEmail(email);
-        User user = opUser.get();
+        Optional<Users> opUser = repository.findByEmail(email);
+        Users user = opUser.get();
         repository.delete(user);
         return true;
     }
