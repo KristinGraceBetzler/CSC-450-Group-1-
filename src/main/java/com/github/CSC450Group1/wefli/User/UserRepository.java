@@ -7,13 +7,13 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer>{
-    Optional<User> findByEmail(String email);
+public interface UserRepository extends CrudRepository<Users, Integer>{
+    Optional<Users> findByEmail(String email);
 
     boolean existsByEmail(String email);
 
     // custom SQL Query
-    @Query(value = "SELECT password FROM user WHERE email = ?1", nativeQuery = true)
+    @Query(value = "SELECT password FROM users WHERE email = ?1", nativeQuery = true)
     String findPasswordByEmail(String email);
 
 }
