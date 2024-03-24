@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Service
 public class TripService {
@@ -26,5 +27,22 @@ public class TripService {
 
         // return the ID of the latest trip
         return trips.getLast().getTripID();
+    }
+
+    // will handle adding the users selected excursions into their trip
+    protected void selectExcursions() {
+
+    }
+
+    protected void likeTrip(int tripID) {
+        // get the trip from the database
+        Optional<Trip> opTrip = tripRepository.findById(tripID);
+        Trip trip = opTrip.get();
+
+        // increment the like counter of the trip
+        trip.incrementLikes();
+
+        // save the trip with updated likes
+        tripRepository.save(trip);
     }
 }

@@ -14,4 +14,9 @@ public class TripController {
     public int selectDestination(@RequestBody SelectedDestination info) {
         return tripService.selectDestination(info);
     }
+
+    @PutMapping("/like")
+    public void likeTrip(@RequestBody int tripID) {
+        tripService.likeTrip(tripID);
+    }
 }
