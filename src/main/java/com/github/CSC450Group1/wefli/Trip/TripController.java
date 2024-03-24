@@ -10,11 +10,6 @@ public class TripController {
     @Autowired
     TripService tripService;
 
-    @PostMapping("/nextDestination")
-    public Destinations nextDestination(@RequestBody int id) {
-        return tripService.getDestination(id);
-    }
-
     @PutMapping("/selectDestination")
     public int selectDestination(@RequestBody SelectedDestination info) {
         return tripService.selectDestination(info);
