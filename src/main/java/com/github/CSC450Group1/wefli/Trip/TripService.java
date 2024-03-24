@@ -1,7 +1,9 @@
 package com.github.CSC450Group1.wefli.Trip;
 
 import com.github.CSC450Group1.wefli.RequestClasses.SelectedDestination;
+import com.github.CSC450Group1.wefli.Trip.Repositries.CommentsRepository;
 import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Comments;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ public class TripService {
     
     @Autowired
     TripRepository tripRepository;
+    @Autowired
+    CommentsRepository commentsRepository;
 
     protected int selectDestination(SelectedDestination info) {
         // create a trip object with the given info to start building a trip for the user
@@ -44,5 +48,9 @@ public class TripService {
 
         // save the trip with updated likes
         tripRepository.save(trip);
+    }
+
+    protected void comment(Comments comment) {
+        commentsRepository.save(comment);
     }
 }
