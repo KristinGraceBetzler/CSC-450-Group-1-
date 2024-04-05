@@ -1,10 +1,11 @@
 package com.github.CSC450Group1.wefli.Trip;
 
-import com.github.CSC450Group1.wefli.RequestClasses.SelectedDestination;
+import com.github.CSC450Group1.wefli.RequestClasses.TripInfo;
 import com.github.CSC450Group1.wefli.Trip.Repositries.CommentsRepository;
+import com.github.CSC450Group1.wefli.Trip.Repositries.DestinationRepository;
+import com.github.CSC450Group1.wefli.Trip.Repositries.ExcursionRepository;
 import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
-import com.github.CSC450Group1.wefli.Trip.TripObjects.Comments;
-import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +19,32 @@ public class TripService {
     TripRepository tripRepository;
     @Autowired
     CommentsRepository commentsRepository;
+    @Autowired
+    ExcursionRepository excursionRepository;
+    @Autowired
+    DestinationRepository destinationRepository;
 
-    protected int selectDestination(SelectedDestination info) {
-        // create a trip object with the given info to start building a trip for the user
-        Trip newTrip = new Trip(info.getUsersID(), info.getDestinationID());
+    protected TripToReturn selectDestination(TripInfo info) {
+        // Create a new trip object
+        Trip trip = new Trip(info.getUsersID(), info.getDestinationID());
 
-        // save the trip
-        tripRepository.save(newTrip);
+        // find the ID's for location specific excursions
+        ArrayList<Excursions> excursions = excursionRepository.findExcursionIds(info.getDestinationID(), info.getExcursion1Tag(),
+                info.getExcursion2Tag(), info.getExcursion3Tag());
 
-        // get all trips the user has to retrieve the ID of the latest trip
-        ArrayList<Trip> trips = tripRepository.findByUsersID(info.getUsersID());
+        // set the excursion ID's for the trip
+        trip.setExcursion1(excursions.get(0).getExcursionID());
+        trip.setExcursion2(excursions.get(1).getExcursionID());
+        trip.setExcursion3(excursions.get(2).getExcursionID());
 
-        // return the ID of the latest trip
-        return trips.getLast().getTripID();
-    }
+        // Save the trip to the database
+        tripRepository.save(trip);
 
-    // will handle adding the users selected excursions into their trip
-    protected void selectExcursions() {
+        // Get the destination the user is going to
+        Optional<Destinations> destination = destinationRepository.findById(info.getDestinationID());
 
+        //build the trip to return and return it
+        return new TripToReturn(destination.get(), excursions.get(0), excursions.get(1), excursions.get(2));
     }
 
     protected void likeTrip(int tripID) {
