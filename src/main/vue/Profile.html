@@ -53,14 +53,12 @@
     </div>
 
     <div class="Header">
+        <button id="Main" onclick="location.href='Main.html'">Main</button>
         <button id="Logout" onclick="location.href='index.html'">Logout</button>
     </div>
     <div class="UserInfo">
         <table id="UserData">
             <tr>
-                <td>
-                    <img id="ProfileImage" :src="user" alt="Profile photo"> <!-- Profile photo taken from database AND to be Avatar -->
-                </td>
                 <td>
                     <p>{{ username }}</p>
                     <p>{{ email }}</p>
@@ -69,9 +67,7 @@
                 </td>
                 <td id="Settings"> <!-- Buttons may change depending on need -->
                     <button id="settings">Settings</button> <br> <!-- Onclick: popup form allowing user to update info -->
-                    <button onclick="location.href='Quiz.html'">Trip Quiz</button> <br> <!-- Need Quiz intro page before starting quiz -->
-                    <button>Trips</button> <br> <!-- Necessary? Trips are already on profile -->
-                    <button>Companions</button> <!-- Onclick: shows list of up to 5 companions and their avatar -->
+                    <button onclick="location.href='Swipe.html'">Take a Trip!</button> <br> <!-- Need Quiz intro page before starting quiz -->
                 </td>
         </table>
     </div>
@@ -113,7 +109,6 @@
         const UserData = Vue.createApp({
             data() {
                 return {
-                    user: "images/thispersondoesnotexist.jpg",
                     username: "TestUsrNme",
                     email: "123@test.com",
                     preference_1: "USA",

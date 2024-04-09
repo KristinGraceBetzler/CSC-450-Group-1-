@@ -1,0 +1,95 @@
+body {
+    background-color: #3cb8ba;
+}
+.Header{
+    text-align: right;
+    margin-bottom: 200px;
+    button{
+        background-color: #3cba7d;
+        border: 2px solid #3c79ba;
+        border-radius: 20px;
+        cursor: pointer;
+        padding: 10px;
+    }
+    #Adventure, #Profile{
+        margin-right: 40%;
+        font-size: large;
+        font-weight: bold;
+        padding: 20px;
+    }
+}
+.trip{
+    border: 2px solid black;
+    background-color: #49c5c7;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.7);
+    border-radius: 35px;
+    margin: auto;
+    width: 80%;
+    margin-bottom: 200px;
+
+    h1{
+        text-align: center;
+    }
+    #city{
+        max-width: 450px;
+        margin: 20px;
+    }
+    #data{
+        width: 70%;
+        h2{
+            text-align: center;
+        }
+        vertical-align: top;
+        h3{
+            padding-top: 125px;
+        }
+    }
+    #heart, #hearted {
+        display: block;
+        height: 50px;
+        position: absolute;
+        margin: -60px 0 0 76%;
+        cursor: pointer;
+    }
+    #heart:hover, #hearted:hover, #comment:hover{
+        height: 60px;
+        transition: height 0.5s;
+        transition-timing-function: ease-in-out;
+    }
+    #hearted {
+        display: none;
+    }
+    #numOfLikes{
+        z-index: 1;
+        display: block;
+        font-weight: bold;
+        height: 50px;
+        position: absolute;
+        margin: -60px 0 0 1480px;
+        cursor: pointer;
+        position: absolute;
+    }
+    #comment {
+        height: 50px;
+        position: absolute;
+        margin: -60px 0 0 25.3%;
+        opacity: 0.7;
+        cursor: pointer;
+    }
+    #commentSection{
+        display: none;
+        table{
+            margin: 20px 20px 20px 20px;
+            #commentUsername{
+                padding-left: 5px;
+                width: 300px;
+            }
+            #userComment{
+                border: 2px solid #3c79ba;
+                border-radius: 30px;
+                padding-left: 10px;
+                width: 1150px;
+            }
+        }
+    }
+}

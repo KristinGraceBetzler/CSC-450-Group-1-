@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="Main.css">
+</head>
+<body>
+    <div class="Header">
+        <button id="Profile" onclick="location.href='Profile.html'">Profile</button>
+        <button id="Adventure" onclick="location.href='Swipe.html'">Take a Trip!</button>
+        <button id="Logout" onclick="location.href='index.html'">Logout</button>
+    </div>
+
+    <div class="trip">
+        <h1>Location: {{city}}</h1>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="city" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h2>Username: {{user}}</h2>
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
+        <span id="numOfLikes"><p id="likes">0</p></span>
+        <img id="hearted" src="images/heart.png" alt="you liked this trip!">
+        <img id="comment" src="images/chat.png" alt="comments">
+        <span id="commentSection">
+            <table>
+                <tr>
+                    <td>
+                        <h3 id="commentUsername">Username: {{user}}</h3>
+                    </td>
+                    <td id="userComment">
+                        <p>This is a comment</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <h3 id="commentUsername">Username: {{user}}</h3>
+                    </td>
+                    <td id="userComment">
+                        <p>This is a comment</p>
+                    </td>
+                </tr>
+
+            </table>
+        </span>
+    </div>
+
+    <div class="trip">
+        <h1>Location: {{city}}</h1>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="city" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h2>Username: {{user}}</h2>
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
+        <img id="comment" src="images/chat.png" alt="comments">
+    </div>
+
+    <div class="trip">
+        <h1>Location: {{city}}</h1>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="city" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h2>Username: {{user}}</h2>
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
+        <img id="comment" src="images/chat.png" alt="comments">
+    </div>
+
+    <div class="trip">
+        <h1>Location: {{city}}</h1>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="city" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h2>Username: {{user}}</h2>
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
+        <img id="comment" src="images/chat.png" alt="comments">
+    </div>
+
+    <div class="trip">
+        <h1>Location: {{city}}</h1>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="city" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h2>Username: {{user}}</h2>
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li>Item 1</li>
+                        <li>Item 2</li>
+                        <li>Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
+        <img id="comment" src="images/chat.png" alt="comments">
+    </div>
+
+</body>
+
+<script>
+    var like = document.getElementById("heart")
+    var liked = document.getElementById("hearted")
+    var span = document.getElementById("commentSection")
+    var comment = document.getElementById("comment")
+    var numOfLikes = document.getElementById("numOfLikes")
+    var likes = document.getElementById("likes")
+    likes = 0
+
+    comment.onclick = function() {
+        if (commentSection.style.display == "block") {
+            commentSection.style.display = "none"
+            comment.style.opacity = "0.7"
+        } else {
+            commentSection.style.display = "block"
+            comment.style.opacity = "1"
+        }
+    }
+
+    like.onclick = function() {
+        like.style.display = "none"
+        liked.style.display = "block"
+        likes++
+        console.log("likes: " + likes)
+    }
+    liked.onclick = function() {
+        liked.style.display = "none"
+        like.style.display = "block"
+        likes--
+        console.log("likes: " + likes)
+    }
+</script>
+
+</html>

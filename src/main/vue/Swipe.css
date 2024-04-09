@@ -1,0 +1,79 @@
+body {
+    background-color: #3cb8ba;
+    margin: auto;
+    button{
+        background-color: #3cba7d;
+        border: 2px solid #3c79ba;
+        border-radius: 20px;
+        cursor: pointer;
+        padding: 10px;
+    }
+}
+.Header{
+    margin-bottom: 100px;
+    #Home{
+        margin-right: 90%;
+        font-size: large;
+        font-weight: bold;
+    }
+    h3{
+        text-align: center;
+    }
+}
+
+.content{
+    display: flexbox;
+    position: absolute;
+    border: 2px solid black;
+    max-width: 800px;
+    border-radius: 35px;
+    margin-left: 30%;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.7);
+    img{
+        max-width: 800px;
+        max-height: 600px;
+        border-radius: 30px 30px 0px 0px;
+    }
+    #cityName{
+        text-align: center;
+    }
+}
+#decision{
+    margin-top: 350px;
+    img{
+        margin-left: 200px;
+        max-width: 200px;
+        cursor: pointer;
+    }
+    #like{
+        margin-left: 1150px;
+    }
+}
+.result{
+    display: none;
+    border: 2px solid black;
+    background-color: #49c5c7;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.7);
+    border-radius: 35px;
+    margin: auto;
+    width: 80%;
+    margin-bottom: 200px;
+
+    h1, h2{
+        text-align: center;
+    }
+    #resultCity{
+        max-width: 450px;
+        margin: 20px;
+    }
+    #data{
+        width: 70%;
+        h2{
+            text-align: center;
+        }
+        vertical-align: top;
+        h3{
+            padding-top: 125px;
+        }
+    }
+}

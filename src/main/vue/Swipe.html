@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take a Trip!</title>
+    <link rel="stylesheet" href="Swipe.css">
+</head>
+<body>
+    <div class="Header">
+        <button id="Home" onclick="location.href='Main.html'">Home</button>
+        <button id="Logout" onclick="location.href='index.html'">Logout</button>
+        <h3 id="intro">Tell us what city youd like to explore and the types of things you'd like to do!</h3>
+    </div>
+
+    <div class="content">
+        <img id="cityImg" src="images/Cities/Alabama, Huntsville.jpg" alt="picture of city">
+        <h3 id="cityName" >Huntsville, Alabama</h3>
+    </div>
+
+    <div class="result">
+        <h1>Location:</h1>
+        <h2 id="destinationCity">text</h2>
+        <table class="tripData">
+            <tr>
+                <td>
+                    <img id="resultCity" src="images/CityMap.png" alt="map of city">
+                </td>
+                <td id="data">
+                    <h3>List of activities:</h3>
+                    <ul>
+                        <li id="activity1">Item 1</li>
+                        <li id="activity2">Item 2</li>
+                        <li id="activity3">Item 3</li>
+                    </ul>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="decision">
+        <img id="pass" src="images/dislike.png" alt="Next location" onclick="dislikeCity()">
+        <img id="like" src="images/heart.png" alt="Like this location">
+    </div>
+</body>
+<script>
+    const pane = document.querySelector(".content")
+    const buttons = document.getElementById("decision")
+    const result = document.querySelector(".result")
+    const destination = document.getElementById("destinationCity")
+    const imageArray = [
+        "images/Cities/Alabama, Huntsville.jpg",
+        "images/Cities/Alaska, Fairbanks.jpg",
+        "images/Cities/Arizona, Phoenix.jpg",
+        "images/Cities/Arkansas, Little Rock.jpg",
+        "images/Cities/California, Los Angelas.jpg",
+        "images/Cities/California, San Francisco.jpg",
+        "images/Cities/Colorado, Denver.jpg",
+        "images/Cities/Conneticut, New Haven.jpg",
+        "images/Cities/Delaware, Wilmington.jpg",
+        "images/Cities/Florida, Miami.jpg",
+        "images/Cities/Florida, Orlando.jpg",
+        "images/Cities/Georgia, Atlanta.jpg",
+        "images/Cities/Hawaii, Honolulu.jpg",
+        "images/Cities/Hawaii, Maui.jpg",
+        "images/Cities/Idaho, Boise.jpg",
+        "images/Cities/Illinois, Chicago.jpg",
+        "images/Cities/Indiana, Indianapolis.jpg",
+        "images/Cities/Iowa, Des Moines.jpg",
+        "images/Cities/Kansas, Kansas City.jpg",
+        "images/Cities/Kentucky, Louisville.jpg",
+        "images/Cities/Louisiana, New Orleans.jpg",
+        "images/Cities/Maine, Portland.jpg",
+        "images/Cities/Massachusetts, Boston.jpg",
+        "images/Cities/Michigan, Detroit.jpg",
+        "images/Cities/Minnesota, Minneapolis.jpg",
+        "images/Cities/Montana, Bozeman.jpg",
+        "images/Cities/Mossouri, St Louis.jpg",
+        "images/Cities/Nebraska, Omaha.jpg",
+        "images/Cities/Nevada, Las Vegas.jpg",
+        "images/Cities/New Hamshire, Portsmouth.jpg",
+        "images/Cities/New Jersey, Atlantic City.jpg",
+        "images/Cities/New Mexico, Albuquerque.jpg",
+        "images/Cities/New York, New York.jpg",
+        "images/Cities/North Carolina, Charlotte.jpg",
+        "images/Cities/North Dakota, Bismarck.jpg",
+        "images/Cities/Ohio, Cincinnati.jpg",
+        "images/Cities/Oklahoma, Oklahoma City.jpg",
+        "images/Cities/Oregon, Portland.jpg",
+        "images/Cities/Pennsylvania, Philadelphia.jpg",
+        "images/Cities/Rhode Island, Providence.jpg",
+        "images/Cities/South Carolina, Charleston.jpg",
+        "images/Cities/South Dakota, Rapid City.jpg",
+        "images/Cities/Tennessee, Nashville.jpg",
+        "images/Cities/Texas, Houston.jpg",
+        "images/Cities/Utah, Salt Lake City.jpg",
+        "images/Cities/Vermont, Burlington.jpg",
+        "images/Cities/Virginia, Newport News.jpg",
+        "images/Cities/Washington DC.jpg",
+        "images/Cities/Washington, Seattle.jpg",
+        "images/Cities/West Virginia, Bridgeport.jpg",
+        "images/Cities/Wisconsin, Madison.jpg",
+        "images/Cities/Wyoming, Cheyenne.jpg"
+    ]
+    const cityNames = [
+        "Huntsville, Alabama",
+        "Fairbanks, Alaska",
+        "Phoenix, Arizona",
+        "Little Rock, Arkansas",
+        "Los Angelas, California",
+        "San Francisco, California",
+        "Denver, Colorado",
+        "New Haven, Conneticut",
+        "Wilmington, Delaware",
+        "Miami, Florida",
+        "Orlando, Florida",
+        "Atlanta, Georgia",
+        "Honolulu, Hawaii",
+        "Maui, Hawaii",
+        "Boise, Idaho",
+        "Chicago, Illinois",
+        "Indiana, Indianapolis",
+        "Des Moines, Iowa",
+        "Kansas City, Kansas",
+        "Louisville, Kentucky",
+        "New Orleans, Louisiana",
+        "Portland, Maine",
+        "Boston, Massachusetts",
+        "Detroit, Michigan",
+        "Minneapolis, Minnesota",
+        "Bazeman, Montana",
+        "St Louis, Mossouri",
+        "Omaha, Nebraska",
+        "Las Vegas, Nevada",
+        "Portsmouth, New Hamshire",
+        "Atlantic City, New Jersey",
+        "Albuquerque, New Mexico",
+        "New York, New York",
+        "Charlotte, North Carolina",
+        "Bismarck, North Dakota",
+        "Cincinnati, Ohio",
+        "Oklahoma City, Oklahoma",
+        "Portland, Oregon",
+        "Philadelphia, Pennsylvania",
+        "Providence, Rhode Island",
+        "Charlseton, South Carolina",
+        "Rapid City, South Dakota",
+        "Nashville, Tennessee",
+        "Houston, Texas",
+        "Salt Lake City, Utah",
+        "Burlington, Vermont",
+        "Newport News, Virginia",
+        "Washington D.C.",
+        "Seattle, Washington",
+        "Bridgeport, West Virginia",
+        "Madison, Wisconsin",
+        "Cheyenne, Wyoming"
+    ]
+    const activityArray = [
+        "images/Obscure.png",
+        "images/Dining.png",
+        "images/Adventurous.png",
+        "images/Relax Indoors.png",
+        "images/Relax Outdoors.png",
+        "images/Historic.png",
+        "images/Family-Friendly.png",
+        "images/Local Entertainment.png",
+    ]
+    const activityNames = [
+        "Visit Something Obscure",
+        "Eat Local Food",
+        "Do Something Adventurous",
+        "Relax Indoors",
+        "Relax Outdoors",
+        "Visit Something Historical",
+        "Family-Friendly Attraction",
+        "Local Entertainment"
+    ]
+    chosenCity = "Huntsville, Alabama"
+    var pickedCity = false
+    chosenActivities = []
+    var i = 0
+    var j = 0
+
+    pass.onclick = function() {
+        if (pickedCity == false) {
+            i++
+            if (i >= imageArray.length) {
+                i = 0
+            }
+            cityImg.src = imageArray[i]
+            cityName.innerText = cityNames[i]
+            chosenCity = cityNames[i]
+        } else {
+            cityImg.src = activityArray[j]
+            cityName.innerText = activityNames[j]
+            j++
+            if (j >= activityArray.length) {
+                j = 0
+            }
+        }
+
+    }
+    like.onclick = function() {
+        pickedCity = true
+        if (j != 0) {
+            chosenActivities.push(activityNames[j-1])
+        }
+        cityImg.src = activityArray[j]
+        cityName.innerText = activityNames[j]
+        if (chosenActivities.length == 3) {
+            intro.style.display = "none"
+            pane.style.display = "none"
+            buttons.style.display = "none"
+            result.style.display = "block"
+
+            resultCity.src = imageArray[i]
+
+            destination.innerText = chosenCity
+            activity1.innerText = chosenActivities[0]
+            activity2.innerText = chosenActivities[1]
+            activity3.innerText = chosenActivities[2]
+        }
+        j++
+    }
+</script>
+</html>
