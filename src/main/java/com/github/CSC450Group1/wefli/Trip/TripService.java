@@ -78,4 +78,8 @@ public class TripService {
         comment.setUser(user.get());
         commentsRepository.save(comment);
     }
+
+    protected ArrayList<Comments> getComments(int tripID) {
+        return commentsRepository.findByTripID(tripID);
+    }
 }
