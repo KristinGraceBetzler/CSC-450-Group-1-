@@ -204,6 +204,11 @@ public class UserService {
         return tripRepository.findByUsersID(usersId);
     }
 
+    protected ArrayList<Trip> getHomePageTrips() {
+       // Get 20 most recent trips and return it
+       return tripRepository.find20NewestTrips();
+    }
+
     /*
     * Need to update this as more things are built
     * will need to delete every trip and comment that is associated with the user

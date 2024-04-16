@@ -59,4 +59,7 @@ public class UserController {
     public ArrayList<Trip> getUserTrips(@RequestBody int usersID) {
         return userService.getUserTrips(usersID);
     }
+
+    @GetMapping("/getHomePage")
+    public ArrayList<Trip> getHomePageTrips() {return userService.getHomePageTrips();}
 }
