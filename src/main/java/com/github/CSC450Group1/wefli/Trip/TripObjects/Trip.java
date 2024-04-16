@@ -1,22 +1,33 @@
 package com.github.CSC450Group1.wefli.Trip.TripObjects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Trip {
     @Id
     private int tripID;
     private int usersID;
-    private int destinationID;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destinationID")
+    private Destinations destination;
+
     private int likes;
     private boolean visibleToOthers;
 
+    @ManyToMany
+    @JoinTable(name = "trip_excursions", joinColumns = @JoinColumn(name = "tripID"),
+            inverseJoinColumns = @JoinColumn(name = "excursionID"))
+    private List<Excursions> tripsExcursions;
+
+
     public Trip() {}
 
-    public Trip(int usersID, int destinationID) {
+    public Trip(int usersID, Destinations destination) {
         this.usersID = usersID;
-        this.destinationID = destinationID;
+        this.destination = destination;
         likes = 0;
         visibleToOthers = false;
     }
@@ -29,8 +40,8 @@ public class Trip {
         return usersID;
     }
 
-    public int getDestinationID() {
-        return destinationID;
+    public Destinations getDestination() {
+        return destination;
     }
 
     public int getLikes() {
@@ -47,5 +58,9 @@ public class Trip {
 
     public void setVisibleToOthers(boolean visible) {
         visibleToOthers = visible;
+    }
+
+    public List<Excursions> getTripsExcursions() {
+        return tripsExcursions;
     }
 }

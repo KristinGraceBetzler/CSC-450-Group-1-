@@ -4,7 +4,8 @@ import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
-import com.github.CSC450Group1.wefli.Trip.TripObjects.TripToReturn;
+import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
@@ -28,6 +29,8 @@ public class UserService {
     private UserRepository repository;
     @Autowired
     private JavaMailSender sender;
+    @Autowired
+    private TripRepository tripRepository;
 
    protected Optional<Users> loginUser(LoginInfo info) {
         // check to make sure there is an account with the given email
@@ -197,8 +200,8 @@ public class UserService {
         }
     }
 
-    protected ArrayList<TripToReturn> getUserTrips(int usersId) {
-       return null;
+    protected ArrayList<Trip> getUserTrips(int usersId) {
+        return tripRepository.findByUsersID(usersId);
     }
 
     /*

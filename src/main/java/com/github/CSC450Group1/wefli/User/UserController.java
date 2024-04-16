@@ -4,7 +4,7 @@ import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
-import com.github.CSC450Group1.wefli.Trip.TripObjects.TripToReturn;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @PostMapping("/userTrips")
-    public ArrayList<TripToReturn> getUserTrips(@RequestBody int usersID) {
+    public ArrayList<Trip> getUserTrips(@RequestBody int usersID) {
         return userService.getUserTrips(usersID);
     }
 }

@@ -1,8 +1,11 @@
 package com.github.CSC450Group1.wefli.Trip;
 
+import com.github.CSC450Group1.wefli.RequestClasses.CommentInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.TripInfo;
 import com.github.CSC450Group1.wefli.Trip.Repositries.*;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.*;
+import com.github.CSC450Group1.wefli.User.UserRepository;
+import com.github.CSC450Group1.wefli.User.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +25,14 @@ public class TripService {
     DestinationRepository destinationRepository;
     @Autowired
     TripExcursionsRepository tripExcursionsRepository;
+    @Autowired
+    UserRepository userRepository;
 
     protected TripToReturn selectDestination(TripInfo info) {
+        // get the destination with the destinationID
+        Optional<Destinations> destination = destinationRepository.findById(info.getDestinationID());
         // Create a new trip object
-        Trip trip = new Trip(info.getUsersID(), info.getDestinationID());
+        Trip trip = new Trip(info.getUsersID(), destination.get());
 
         // find the ID's for location specific excursions
         ArrayList<Excursions> excursions = excursionRepository.findExcursionIds(info.getDestinationID(), info.getExcursion1Tag(),
@@ -47,9 +54,6 @@ public class TripService {
         // Insert into the junction table
         tripExcursionsRepository.saveAll(tripExcursions);
 
-        // Get the destination the user is going to
-        Optional<Destinations> destination = destinationRepository.findById(info.getDestinationID());
-
         //build the trip to return and return it
         return new TripToReturn(destination.get(), excursions.get(0), excursions.get(1), excursions.get(2));
     }
@@ -66,7 +70,12 @@ public class TripService {
         tripRepository.save(trip);
     }
 
-    protected void comment(Comments comment) {
+    protected void comment(CommentInfo commentInfo) {
+        Comments comment = new Comments();
+        comment.setComment(commentInfo.getComment());
+        comment.setTripID(commentInfo.getTripID());
+        Optional<Users> user = userRepository.findById(commentInfo.getUsersID());
+        comment.setUser(user.get());
         commentsRepository.save(comment);
     }
 }
