@@ -1,25 +1,33 @@
 package com.github.CSC450Group1.wefli.Trip.TripObjects;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 public class Trip {
     @Id
     private int tripID;
     private int usersID;
-    private int destinationID;
-    private int excursion1;
-    private int excursion2;
-    private int excursion3;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destinationID")
+    private Destinations destination;
+
     private int likes;
     private boolean visibleToOthers;
 
+    @ManyToMany
+    @JoinTable(name = "trip_excursions", joinColumns = @JoinColumn(name = "tripID"),
+            inverseJoinColumns = @JoinColumn(name = "excursionID"))
+    private List<Excursions> tripsExcursions;
+
+
     public Trip() {}
 
-    public Trip(int usersID, int destinationID) {
+    public Trip(int usersID, Destinations destination) {
         this.usersID = usersID;
-        this.destinationID = destinationID;
+        this.destination = destination;
         likes = 0;
         visibleToOthers = false;
     }
@@ -32,19 +40,13 @@ public class Trip {
         return usersID;
     }
 
-    public int getDestinationID() {
-        return destinationID;
+    public Destinations getDestination() {
+        return destination;
     }
 
     public int getLikes() {
         return likes;
     }
-
-    public int getExcursion1() {return excursion1;}
-
-    public int getExcursion2() {return excursion2;}
-
-    public int getExcursion3() {return excursion3;}
 
     public boolean isVisibleToOthers() {
         return visibleToOthers;
@@ -58,15 +60,7 @@ public class Trip {
         visibleToOthers = visible;
     }
 
-    public void setExcursion1(int excursion1) {
-        this.excursion1 = excursion1;
-    }
-
-    public void setExcursion2(int excursion2) {
-        this.excursion2 = excursion2;
-    }
-
-    public void setExcursion3(int excursion3) {
-        this.excursion3 = excursion3;
+    public List<Excursions> getTripsExcursions() {
+        return tripsExcursions;
     }
 }

@@ -4,11 +4,13 @@ import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RestController
@@ -39,7 +41,7 @@ public class UserController {
     @PutMapping("/verify")
     public boolean verifyUser(@RequestBody VerifyInfo verifyInfo) {return userService.verifyUser(verifyInfo);}
 
-    @PutMapping("resendVerification")// email sent as plain text
+    @PutMapping("/resendVerification")// email sent as plain text
     public void resendVerification(@RequestBody String email) {
         try {
             userService.sendVerificationCode(email);
@@ -48,8 +50,13 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("delete") // send email as plain text
+    @DeleteMapping("/delete") // send email as plain text
     public boolean deleteUser(@RequestBody String email) {
         return userService.deleteUser(email);
+    }
+
+    @PostMapping("/userTrips")
+    public ArrayList<Trip> getUserTrips(@RequestBody int usersID) {
+        return userService.getUserTrips(usersID);
     }
 }

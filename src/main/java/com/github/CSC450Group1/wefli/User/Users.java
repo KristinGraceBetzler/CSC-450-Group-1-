@@ -1,6 +1,5 @@
 package com.github.CSC450Group1.wefli.User;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
@@ -9,7 +8,6 @@ import jakarta.persistence.Id;
 public class Users {
     // annotate with @Id
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
     private int usersID;
     private String firstName;
     private String lastName;

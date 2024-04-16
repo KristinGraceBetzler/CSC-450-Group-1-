@@ -4,6 +4,8 @@ import com.github.CSC450Group1.wefli.RequestClasses.LoginInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
+import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
@@ -13,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /* Service layer to handle the different operations for a user account
@@ -26,8 +29,10 @@ public class UserService {
     private UserRepository repository;
     @Autowired
     private JavaMailSender sender;
+    @Autowired
+    private TripRepository tripRepository;
 
-    public Optional<Users> loginUser(LoginInfo info) {
+   protected Optional<Users> loginUser(LoginInfo info) {
         // check to make sure there is an account with the given email
         if (!repository.existsByEmail(info.getEmail())) {
             return Optional.empty(); // The user does not have an account with that email
@@ -57,7 +62,7 @@ public class UserService {
         }
     }
 
-    public String createUser(Users user) {
+    protected String createUser(Users user) {
         // Check if the account already exists with that email
         if (repository.existsByEmail(user.getEmail())) {
             return "Account Exists"; // the account exists
@@ -80,7 +85,7 @@ public class UserService {
         }
     }
 
-    public boolean updateUserInfo(UpdateInfo info) {
+    protected boolean updateUserInfo(UpdateInfo info) {
         Optional<Users> opUser = repository.findByEmail(info.getEmail()); // can be changed to find by ID if we choose
 
         // get the user out of the Optional class
@@ -98,7 +103,7 @@ public class UserService {
         return true;
     }
 
-    public boolean updatePassword(PasswordUpdate info) {
+    protected boolean updatePassword(PasswordUpdate info) {
         // get the user we are trying to update the password for
         Optional<Users> opUser = repository.findByEmail(info.getEmail());
         Users user = opUser.get();
@@ -179,7 +184,7 @@ public class UserService {
         return verificationMessage;
     }
 
-    public boolean verifyUser(VerifyInfo info) {
+    protected boolean verifyUser(VerifyInfo info) {
         if (!repository.existsByEmail(info.getEmail())) {return false;} // return false if user does not exist
         // get the user
         Optional<Users> opUser = repository.findByEmail(info.getEmail());
@@ -193,6 +198,10 @@ public class UserService {
         } else {
             return false;
         }
+    }
+
+    protected ArrayList<Trip> getUserTrips(int usersId) {
+        return tripRepository.findByUsersID(usersId);
     }
 
     /*
