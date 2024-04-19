@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Optional;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
