@@ -13,154 +13,56 @@
         <button id="Logout" onclick="location.href='index.html'">Logout</button>
     </div>
 
-    <div class="trip">
-        <h1>Location: {{city}}</h1>
-        <table class="tripData">
-            <tr>
-                <td>
-                    <img id="city" src="images/CityMap.png" alt="map of city">
-                </td>
-                <td id="data">
-                    <h2>Username: {{user}}</h2>
-                    <h3>List of activities:</h3>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-
-                </td>
-            </tr>
-        </table>
-        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
-        <span id="numOfLikes"><p id="likes">0</p></span>
-        <img id="hearted" src="images/heart.png" alt="you liked this trip!">
-        <img id="comment" src="images/chat.png" alt="comments">
-        <span id="commentSection">
-            <table>
+    <div id="trips">
+        <div class="trip">
+            <h1>Location: {{city}}</h1>
+            <table class="tripData">
                 <tr>
                     <td>
-                        <h3 id="commentUsername">Username: {{user}}</h3>
+                        <img id="city" src="images/CityMap.png" alt="map of city">
                     </td>
-                    <td id="userComment">
-                        <p>This is a comment</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <h3 id="commentUsername">Username: {{user}}</h3>
-                    </td>
-                    <td id="userComment">
-                        <p>This is a comment</p>
-                    </td>
-                </tr>
+                    <td id="data">
+                        <h2>Username: {{user}}</h2>
+                        <h3>List of activities:</h3>
+                        <ul>
+                            <li>Item 1</li>
+                            <li>Item 2</li>
+                            <li>Item 3</li>
+                        </ul>
 
+                    </td>
+                </tr>
             </table>
-        </span>
-    </div>
+            <img id="comment" src="images/chat.png" alt="comments">
+            <span id="commentSection">
+                <table>
+                    <tr>
+                        <td>
+                            <h3 id="commentUsername">Username: {{user}}</h3>
+                        </td>
+                        <td id="userComment">
+                            <p>This is a comment</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 id="commentUsername">Username: {{user}}</h3>
+                        </td>
+                        <td id="userComment">
+                            <p>This is a comment</p>
+                        </td>
+                    </tr>
 
-    <div class="trip">
-        <h1>Location: {{city}}</h1>
-        <table class="tripData">
-            <tr>
-                <td>
-                    <img id="city" src="images/CityMap.png" alt="map of city">
-                </td>
-                <td id="data">
-                    <h2>Username: {{user}}</h2>
-                    <h3>List of activities:</h3>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-
-                </td>
-            </tr>
-        </table>
-        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
-        <img id="comment" src="images/chat.png" alt="comments">
-    </div>
-
-    <div class="trip">
-        <h1>Location: {{city}}</h1>
-        <table class="tripData">
-            <tr>
-                <td>
-                    <img id="city" src="images/CityMap.png" alt="map of city">
-                </td>
-                <td id="data">
-                    <h2>Username: {{user}}</h2>
-                    <h3>List of activities:</h3>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-
-                </td>
-            </tr>
-        </table>
-        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
-        <img id="comment" src="images/chat.png" alt="comments">
-    </div>
-
-    <div class="trip">
-        <h1>Location: {{city}}</h1>
-        <table class="tripData">
-            <tr>
-                <td>
-                    <img id="city" src="images/CityMap.png" alt="map of city">
-                </td>
-                <td id="data">
-                    <h2>Username: {{user}}</h2>
-                    <h3>List of activities:</h3>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-
-                </td>
-            </tr>
-        </table>
-        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
-        <img id="comment" src="images/chat.png" alt="comments">
-    </div>
-
-    <div class="trip">
-        <h1>Location: {{city}}</h1>
-        <table class="tripData">
-            <tr>
-                <td>
-                    <img id="city" src="images/CityMap.png" alt="map of city">
-                </td>
-                <td id="data">
-                    <h2>Username: {{user}}</h2>
-                    <h3>List of activities:</h3>
-                    <ul>
-                        <li>Item 1</li>
-                        <li>Item 2</li>
-                        <li>Item 3</li>
-                    </ul>
-
-                </td>
-            </tr>
-        </table>
-        <img id="heart" src="images/heart_empty.png" alt="like this trip!">
-        <img id="comment" src="images/chat.png" alt="comments">
+                </table>
+            </span>
+        </div>
     </div>
 
 </body>
 
 <script>
-    var like = document.getElementById("heart")
-    var liked = document.getElementById("hearted")
     var span = document.getElementById("commentSection")
     var comment = document.getElementById("comment")
-    var numOfLikes = document.getElementById("numOfLikes")
-    var likes = document.getElementById("likes")
-    likes = 0
 
     comment.onclick = function() {
         if (commentSection.style.display == "block") {
@@ -172,17 +74,13 @@
         }
     }
 
-    like.onclick = function() {
-        like.style.display = "none"
-        liked.style.display = "block"
-        likes++
-        console.log("likes: " + likes)
-    }
-    liked.onclick = function() {
-        liked.style.display = "none"
-        like.style.display = "block"
-        likes--
-        console.log("likes: " + likes)
+    function displayTrips() {
+        fetch("https://wefliapp-v1-3.onrender.com/user/userTrips", {
+            method: "GET"
+        }).then(res => res.json())
+        .then(data => {
+            console.log(data)
+        })
     }
 </script>
 

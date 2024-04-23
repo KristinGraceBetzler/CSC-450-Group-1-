@@ -16,15 +16,11 @@
                 <table class="settingsTable">
                     <tr>
                         <td> <h3>Username</h3> </td>
-                        <td> <input type="text" class="input" value="TestUsrNme"> </td>
+                        <td> <input type="text" class="input" value="TestUsrNme" id="settingsUser"> </td>
                     </tr>
                     <tr>
                         <td> <h3>Email</h3> </td>
-                        <td> <input type="email" class="input" value="123@test.com"> </td>
-                    </tr>
-                    <tr>
-                        <td> <h3>Password</h3> </td>
-                        <td> <input type="password" class="input" placeholder="New Password"> </td>
+                        <td> <input type="email" class="input" value="123@test.com" id="settingsEmail"> </td>
                     </tr>
                     <tr>
                         <td> <h3>Country of travel</h3> </td>
@@ -76,27 +72,10 @@
         <hr>
     </div>
 
-    <div class="Trip">
+    <div class="Trip" id="UserTrips">
         <table id="TripData"> <!-- TripData will be repeated on page as many times as requried, depending on how many trips user has booked -->
             <tr>
-                <td>
-                    <img :src="city" alt="map of city"> <!-- taken from database -->
-                </td>
-                <td>
-                    <h1 id="Location">{{ location }}</h1> <br>
-                    <p id="DestinationDescription">{{ description }}</p>
-                    <br><br>
-                    <h3>Activities to do:</h3> <br>
-                    <p v-for="(x, index) in activities">
-                        {{ index + 1 }}: {{ x.activity }} <br>
-                    </p>
-                </td>
-                <td> <!-- buttons may not be neccessary; unknown use -->
-                    <button>Button 1</button> <br>
-                    <button>Button 2</button> <br>
-                    <button>Button 3</button> <br>
-                    <button>Button 4</button> <br>
-                </td>
+                <td><h1>Loading...</h1></td>
             </tr>
         </table>
     </div>
@@ -106,33 +85,19 @@
 
     <script>
 
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
         const UserData = Vue.createApp({
             data() {
                 return {
-                    username: "TestUsrNme",
-                    email: "123@test.com",
+                    username: userInfo.userName,
+                    email: userInfo.email,
                     preference_1: "USA",
                     preference_2: "Delta"
                 }
             }
         })
 
-        const TripData = Vue.createApp({
-            data() {
-                return {
-                    city: "images/CityMap.png",
-                    location: "TestLocation",
-                    description: "Location description. This text will be updated to reflect a description of the vacation destination",
-                    activities: [
-                        {activity: 'Camping'},
-                        {activity: 'Fine Dining'},
-                        {activity: 'Fireworks'}
-                    ]
-                }
-            }
-        })
-
-        TripData.mount('#TripData')
         UserData.mount('#UserData')
 
         // Get the modal
@@ -147,6 +112,10 @@
         // When the user clicks the button, open the modal
         btn.onclick = function() {
             modal.style.display = "block"
+            var userName = document.getElementById("settingsUser");
+            var email = document.getElementById("settingsEmail");
+            userName.value = userInfo.userName;
+            email.value = userInfo.email;
         }
 
         // When the user click on <span> (x), close the modal
@@ -160,6 +129,81 @@
                 modal.style.display = "none";
             }
         }
+
+        function displayTrips() {
+            fetch("https://wefliapp-v1-3.onrender.com/user/userTrips", {
+            method: "POST",
+            body: JSON.stringify(parseInt(userInfo.userID)),
+            headers: {'Content-Type' : 'application/json'}
+        }).then(res => res.json())
+        .then(data => {
+            const testTable = document.getElementById("TripData");
+            testTable.remove();
+            if (Object.keys(data).length != 0) {
+                for (let i = 0; i < Object.keys(data).length; i++) {
+                    // create a table
+                    var table = document.createElement("TABLE");
+                    // create a table row
+                    const row = table.insertRow();
+
+                    // create the image cell
+                    const image = row.insertCell();
+                    // create and insert a picture into the image cell
+                    img = document.createElement("img");
+                    img.src = "images/CityMap.png";
+                    image.appendChild(img);
+
+                    // create the next cell for other trip info
+                    const otherData = row.insertCell();
+
+                    // create location header
+                    const head1 = document.createElement("h1");
+                    const head1Info = document.createTextNode(data[i].destination.destinationCity + ", " + data[i].destination.destinationState);
+                    head1.appendChild(head1Info);
+                    otherData.appendChild(head1);
+                    otherData.appendChild(document.createElement("br"));
+
+                    // create line breaks
+                    otherData.appendChild(document.createElement("br"));
+
+                    // create activities header and add line break
+                    const activityHead = document.createElement("h3");
+                    const actHeadInfo = document.createTextNode("Activities to do:");
+                    activityHead.appendChild(actHeadInfo);
+                    otherData.appendChild(activityHead); otherData.appendChild(document.createElement("br"));
+
+                    // create the activities
+                    for (let j = 0; j < 3; j++) {
+                        const activity = document.createElement("p");
+                        const activityInfo = document.createTextNode(j+1 + ": " + data[i].tripsExcursions[j].excursionTitle);
+                        activity.appendChild(activityInfo);
+                        otherData.appendChild(activity);
+                    }
+                    
+                    const container = document.getElementById("UserTrips");
+                    container.appendChild(table);
+                }
+            } else {
+                var table = document.createElement("TABLE");
+                // create a table row
+                const row = table.insertRow();
+
+                const cell = row.insertCell();
+                
+                const head = document.createElement("h1");
+                const headText = document.createTextNode("No trips to display! Go create a trip!");
+                head.appendChild(headText);
+                cell.appendChild(head);
+
+                const container = document.getElementById("UserTrips");
+                container.appendChild(table);
+            }
+        });
+        }
+
+        window.addEventListener('load', function() {
+            displayTrips()
+        });
     </script>
 
     <script>

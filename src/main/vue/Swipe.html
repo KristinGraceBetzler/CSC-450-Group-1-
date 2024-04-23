@@ -203,24 +203,48 @@
 
     }
     like.onclick = function() {
-        pickedCity = true
         if (j != 0) {
-            chosenActivities.push(activityNames[j-1])
+            chosenActivities.push(activityNames[j - 1])
+        } else if (j == 0 && pickedCity) {
+            chosenActivities.push(activityNames[7])
         }
+
+        pickedCity = true
+
         cityImg.src = activityArray[j]
         cityName.innerText = activityNames[j]
         if (chosenActivities.length == 3) {
+
             intro.style.display = "none"
             pane.style.display = "none"
             buttons.style.display = "none"
-            result.style.display = "block"
 
-            resultCity.src = imageArray[i]
+            const user = JSON.parse(localStorage.getItem('userInfo'));
+            var locationID = i;
+            const tripInfo = {
+                "usersID": parseInt(user.userID),
+                "destinationID": locationID + 1,
+                "excursion1Tag": chosenActivities[0],
+                "excursion2Tag": chosenActivities[1],
+                "excursion3Tag": chosenActivities[2]
+            }
 
-            destination.innerText = chosenCity
-            activity1.innerText = chosenActivities[0]
-            activity2.innerText = chosenActivities[1]
-            activity3.innerText = chosenActivities[2]
+            fetch("https://wefliapp-v1-3.onrender.com/trip/createTrip", {
+                method: "PUT",
+                body: JSON.stringify(tripInfo),
+                headers: {'Content-Type' : 'application/json'}
+            }).then(result =>result.json())
+            .then(data => {
+                result.style.display = "block";
+
+                resultCity.src = imageArray[i];
+
+                result.style.display = "block";
+                destination.innerText = chosenCity;
+                activity1.innerText = data.excursion1.excursionTitle;
+                activity2.innerText = data.excursion2.excursionTitle;
+                activity3.innerText = data.excursion3.excursionTitle;
+            })
         }
         j++
     }

@@ -57,6 +57,27 @@
         </div>
     </div>
 
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Enter your verification code!</h2>
+            <form id="verifyForm" action="index.html">
+                <table class="modalTable">
+                    <tr>
+                        <td><label for="EmailToVerify">Email: </label></td>
+                        <td><input type="email" id="EmailToVerify" name="EmailToVerify" placeholder="Email" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="verifyCode">Verification Code: </label></td>
+                        <td><input type="number" id="verifyCode" name="verifyCode" placeholder="code" required></td>
+                    </tr>
+                </table>
+
+                <input type="submit" id="Submit" value="Verify Email" onclick="verifyEmail()">
+            </form>
+        </div>
+    </div>
+
     <div class="Table">
         <table>
             <tr>
@@ -64,22 +85,22 @@
                     <img id="Image" src="images/Default_Avatar4.jpg" alt="default avatar"> <!-- White background of photo needs to be removed -->
                 </td>
                 <td id="Login">
-                    <form id="Form" action="Main.html"> <!-- {method ="post"} to be added and handled by backend -->
 
-                        <input type="text" id="username" name="username" placeholder="Username" required> <br>
+                    <input type="email" id="email1" name="username" placeholder="Email" required> <br>
 
-                        <input type="password" id="password1" name="password" placeholder="Password" required>
-                        <span class="eye" onclick="showHide3()">
-                            <i id="eye3" class="fa fa-eye"></i>
-                            <i id="slash3" class="fa fa-eye-slash"></i>
-                        </span>
-                        <br><br>
+                    <input type="password" id="password1" name="password" placeholder="Password" required>
+                    <span class="eye" onclick="showHide3()">
+                        <i id="eye3" class="fa fa-eye"></i>
+                        <i id="slash3" class="fa fa-eye-slash"></i>
+                    </span>
+                    <br><br>
 
-                        <input id="Submit" type="submit" value="Sign In"> <br>
-                    </form>
+                    <input id="Submit" type="submit" value="Sign In" onclick="login()"> <br>
                     <br><br>
                     <h2>New User?</h2>
                     <button id="signUp">Sign Up</button>
+                    <h2>Verify Email!</h2>
+                    <button id="verify">Verify Email</button>
                 </td>
             </tr>
         </table>
@@ -92,16 +113,23 @@
     <script>
         // Get the modal
         var modal = document.getElementById("modal")
+        var modal1 = document.getElementById("modal1")
 
         // Get the button that opens the modal
         var btn = document.getElementById("signUp")
+        var btn1 = document.getElementById("verify")
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
+        var verifyClose = document.getElementsByClassName("close")[1];
 
         // When the user clicks the button, open the modal
         btn.onclick = function() {
             modal.style.display = "block"
+        }
+
+        btn1.onclick = function() {
+            modal1.style.display = "block"
         }
 
         // When the user click on <span> (x), close the modal
@@ -109,10 +137,17 @@
             modal.style.display = "none";
         }
 
+        verifyClose.onclick = function() {
+            modal1.style.display = "none";
+        }
+
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
             if (event.target == modal) {
                 modal.style.display = "none";
+            }
+            if (event.target == modal1) {
+                modal1.style.display = "none";
             }
         }
 
@@ -171,6 +206,16 @@
             password = document.getElementById("password").value
             confirmPassword = document.getElementById("confirmPassword").value
 
+            var obj = {
+                "firstName": "first name",
+                "lastName": "lastname",
+                "phoneNumber": "phonenumber",
+                "email": email,
+                "address": "address",
+                "userName": username,
+                "password": password
+            }
+
             if (password != confirmPassword) {
                 alert("your passwords do not match!")
                 return
@@ -180,6 +225,12 @@
                 alert("Email or Password is invalid!")
                 return
             }
+            fetch("https://wefliapp-v1-3.onrender.com/user/create", {
+                method: "POST",
+                body: JSON.stringify(obj),
+                headers: {'Content-Type' : 'application/json'}
+            })
+
             alert("Account Created!")
             //TODO: Need to connect email, password info to server
         }
@@ -198,6 +249,53 @@
                 console.log("password invalid")
             }
             return regex.test(password)
+        }
+
+        // allows a user to verify their email
+        function verifyEmail() {
+            var email = document.getElementById("EmailToVerify").value
+            var code = document.getElementById("verifyCode").value
+            var verifyCode = parseInt(code);
+
+            var verifyInfo = {
+                "email": email,
+                "verificationCode": verifyCode
+            }
+
+            fetch("https://wefliapp-v1-3.onrender.com/user/verify", {
+                method: "PUT",
+                body: JSON.stringify(verifyInfo),
+                headers: {'Content-Type' : 'application/json'}
+            })
+            .then(res => res.json())
+            .then(data => console.log(data));
+        }
+
+        function login() {
+            email = document.getElementById("email1").value
+            password = document.getElementById("password1").value
+
+            var loginInfo = {
+                "email": email,
+                "password": password
+            }
+
+            fetch("https://wefliapp-v1-3.onrender.com/user/login", {
+                method: "POST",
+                body: JSON.stringify(loginInfo),
+                headers: {'Content-Type' : 'application/json'}
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (JSON.stringify(data) == "null") {
+                    document.getElementById("email1").value = "";
+                    document.getElementById("password1").value = "";
+                    alert("Incorrect login information, please try again.");
+                } else {
+                    localStorage.setItem('userInfo', JSON.stringify(data));
+                    window.location.assign("Profile.html");
+                }
+            });
         }
     </script>
 </body>
