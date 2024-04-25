@@ -6,6 +6,7 @@ import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
 import com.github.CSC450Group1.wefli.Trip.Repositries.TripRepository;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.TripForHomePage;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.mindrot.jbcrypt.BCrypt;
@@ -204,9 +205,18 @@ public class UserService {
         return tripRepository.findByUsersID(usersId);
     }
 
-    protected ArrayList<Trip> getHomePageTrips() {
+    protected ArrayList<TripForHomePage> getHomePageTrips() {
        // Get 20 most recent trips and return it
-       return tripRepository.find20NewestTrips();
+        ArrayList<Trip> trips = tripRepository.find20NewestTrips();
+        ArrayList<TripForHomePage> returnTrips = new ArrayList<>();
+        for (Trip trip : trips) {
+            Optional<Users> opUser = repository.findById(trip.getUsersID());
+            Users user = opUser.get();
+
+            returnTrips.add(new TripForHomePage(trip.getTripID(), user.getUserName(), trip.getDestination(), trip.getLikes(),
+                    trip.isVisibleToOthers(), trip.getTripsExcursions()));
+        }
+        return returnTrips;
     }
 
     /*

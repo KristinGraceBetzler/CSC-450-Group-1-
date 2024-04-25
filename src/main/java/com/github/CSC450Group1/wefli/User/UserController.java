@@ -5,6 +5,7 @@ import com.github.CSC450Group1.wefli.RequestClasses.PasswordUpdate;
 import com.github.CSC450Group1.wefli.RequestClasses.UpdateInfo;
 import com.github.CSC450Group1.wefli.RequestClasses.VerifyInfo;
 import com.github.CSC450Group1.wefli.Trip.TripObjects.Trip;
+import com.github.CSC450Group1.wefli.Trip.TripObjects.TripForHomePage;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,5 +63,5 @@ public class UserController {
     }
 
     @GetMapping("/getHomePage")
-    public ArrayList<Trip> getHomePageTrips() {return userService.getHomePageTrips();}
+    public ArrayList<TripForHomePage> getHomePageTrips() {return userService.getHomePageTrips();}
 }

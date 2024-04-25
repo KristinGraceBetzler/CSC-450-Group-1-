@@ -11,7 +11,7 @@ public class Destinations {
     private String destinationState;
     private String destinationCity;
     private String destinationClimateTag;
-    private String destinationPicture;
+    private String imageName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "destination", cascade = CascadeType.ALL)
     private List<Trip> trips;
@@ -32,7 +32,7 @@ public class Destinations {
         return destinationClimateTag;
     }
 
-    public String getDestinationPicture() {
-        return destinationPicture;
+    public String getImageName() {
+        return imageName;
     }
 }
