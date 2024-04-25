@@ -65,6 +65,10 @@ body {
     #resultCity{
         max-width: 450px;
         margin: 20px;
+        border-radius: 25px;
+    }
+    ol {
+        margin: 1% 0 1% 0;
     }
     #data{
         width: 70%;

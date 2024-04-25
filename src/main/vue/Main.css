@@ -33,6 +33,10 @@ body {
     #city{
         max-width: 450px;
         margin: 20px;
+        border-radius: 25px;
+    }
+    ol {
+        margin: .5% 0 .5% 0;
     }
     #data{
         width: 70%;
@@ -51,7 +55,7 @@ body {
         margin: -60px 0 0 76%;
         cursor: pointer;
     }
-    #heart:hover, #hearted:hover, #comment:hover{
+    #heart:hover, #hearted:hover, .comment:hover{
         height: 60px;
         transition: height 0.5s;
         transition-timing-function: ease-in-out;
@@ -69,26 +73,43 @@ body {
         cursor: pointer;
         position: absolute;
     }
-    #comment {
+    .comment{
         height: 50px;
-        position: absolute;
+        position: relative;
         margin: -60px 0 0 25.3%;
         opacity: 0.7;
         cursor: pointer;
     }
-    #commentSection{
-        display: none;
+    .commentSection{
         table{
             margin: 20px 20px 20px 20px;
-            #commentUsername{
+            .commentUsername{
                 padding-left: 5px;
                 width: 300px;
             }
-            #userComment{
+            .userComment{
                 border: 2px solid #3c79ba;
                 border-radius: 30px;
                 padding-left: 10px;
                 width: 1150px;
+            }
+            .commentInput{
+                border: 2px solid #3c79ba;
+                background-color: #49c5c7;
+                border-radius: 30px;
+                padding-left: 10px;
+                width: 1150px;
+                height: 55px;
+            }
+            .labelForComment{
+                text-align: center;
+                cursor: pointer;
+            }
+            .labelForComment:hover {
+                background-color: #3c79ba;
+                transition: background-color 0.5s;
+                transition-timing-function: ease-in-out;
+                border-radius: 10px;
             }
         }
     }

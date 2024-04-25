@@ -12,7 +12,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Profile Settings</h2>
-            <form action="Profile.html" class="settingsForm">
+            <form action="Profile.html" class="settingsForm" id="settingsForm">
                 <table class="settingsTable">
                     <tr>
                         <td> <h3>Username</h3> </td>
@@ -73,7 +73,7 @@
     </div>
 
     <div class="Trip" id="UserTrips">
-        <table id="TripData"> <!-- TripData will be repeated on page as many times as requried, depending on how many trips user has booked -->
+        <table id="TripData" style="margin: 0 auto 0 auto;"> <!-- TripData will be repeated on page as many times as requried, depending on how many trips user has booked -->
             <tr>
                 <td><h1>Loading...</h1></td>
             </tr>
@@ -86,6 +86,34 @@
     <script>
 
         const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
+        var settingsForm = document.getElementById("settingsForm");
+
+        settingsForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var updateUserName = document.getElementById("settingsUser").value;
+            var updateEmail = document.getElementById("settingsEmail").value;
+
+            var infoForReq = {
+                "email": updateEmail,
+                "firstName": "firstName",
+                "lastName": "lastName",
+                "phoneNumber": "phoneNumber",
+                "address": "address",
+                "userName": updateUserName
+            }
+            fetch("https://wefliapp-v1-3.onrender.com/user/update", {
+                method: "PUT",
+                body: JSON.stringify(infoForReq),
+                headers: {'Content-Type' : 'application/json'}
+            }).then(res => {
+                userInfo.userName = updateUserName;
+                userInfo.email = updateEmail;
+                localStorage.setItem('userInfo', JSON.stringify(userInfo));
+                alert("Account information has been updated!");
+                window.location.assign("Profile.html");
+            })
+        });
 
         const UserData = Vue.createApp({
             data() {
@@ -140,7 +168,8 @@
             const testTable = document.getElementById("TripData");
             testTable.remove();
             if (Object.keys(data).length != 0) {
-                for (let i = 0; i < Object.keys(data).length; i++) {
+                for (let i = Object.keys(data).length-1; i >= 0 ; i--) {
+                    console.log(data);
                     // create a table
                     var table = document.createElement("TABLE");
                     // create a table row
@@ -150,7 +179,8 @@
                     const image = row.insertCell();
                     // create and insert a picture into the image cell
                     img = document.createElement("img");
-                    img.src = "images/CityMap.png";
+                    img.src = "images/Cities/" + data[i].destination.imageName;
+                    img.className = "cityImg";
                     image.appendChild(img);
 
                     // create the next cell for other trip info
@@ -173,16 +203,44 @@
                     otherData.appendChild(activityHead); otherData.appendChild(document.createElement("br"));
 
                     // create the activities
+                    const activity = document.createElement("ol");
                     for (let j = 0; j < 3; j++) {
-                        const activity = document.createElement("p");
-                        const activityInfo = document.createTextNode(j+1 + ": " + data[i].tripsExcursions[j].excursionTitle);
-                        activity.appendChild(activityInfo);
-                        otherData.appendChild(activity);
+                        const activityNameLi = document.createElement("li");
+                        const activityInfo = document.createTextNode(data[i].tripsExcursions[j].excursionTitle);
+                        activityNameLi.appendChild(activityInfo);
+                        activityNameLi.value = j+1;
+                        activity.appendChild(activityNameLi);
+                        const activityDescriptionLi = document.createElement("li");
+                        const activityDescriptionList = document.createElement("ol");
+                        const activityDescription = document.createTextNode(data[i].tripsExcursions[j].excursionDescription);
+                        activityDescriptionList.appendChild(activityDescription);
+                        activityDescriptionLi.appendChild(activityDescriptionList);
+                        activityDescriptionLi.style = "list-style-type: none";
+                        activity.appendChild(activityDescriptionLi);
                     }
+                    otherData.appendChild(activity);
                     
+                    const div = document.createElement("div");
+                    div.className = "trip";
+                    div.id = data[i].tripID;
+
                     const container = document.getElementById("UserTrips");
-                    container.appendChild(table);
+                    div.appendChild(table);
+                    container.appendChild(div);
+
+                    var commentImg = document.createElement("img");
+                    commentImg.src = "images/chat.png";
+                    commentImg.className = "comment";
+
+                    div.appendChild(commentImg);
+
                 }
+
+                const buttons = document.querySelectorAll('.comment');
+
+                buttons.forEach(button => button.addEventListener('click', event => {
+                    getComments(event.target.parentNode.id);
+                }))
             } else {
                 var table = document.createElement("TABLE");
                 // create a table row
@@ -194,6 +252,7 @@
                 const headText = document.createTextNode("No trips to display! Go create a trip!");
                 head.appendChild(headText);
                 cell.appendChild(head);
+                table.style = "margin: 0 auto 0 auto";
 
                 const container = document.getElementById("UserTrips");
                 container.appendChild(table);
@@ -201,8 +260,111 @@
         });
         }
 
+        function getComments(tripID) {
+            if (document.getElementById("commentSection" + tripID) == null) {
+                fetch("https://wefliapp-v1-3.onrender.com/trip/getComments", {
+                    method: "POST",
+                    body: JSON.stringify(parseInt(tripID)),
+                    headers: {'Content-Type' : 'application/json'}
+                }).then(res => res.json())
+                .then(data => {
+                    // create the span
+                    const span = document.createElement("span");
+                    span.id = "commentSection" +tripID;
+                    span.className = "commentSection";
+
+                    // create the table
+                    const table = document.createElement("table");
+                    // add in section to add the comment to the trip
+                    const addCommentRow = table.insertRow();
+                    // add the label for the trip
+                    const labelCell = addCommentRow.insertCell();
+                    labelCell.className = "labelForComment";
+
+                    const labelElement = document.createElement("h3");
+                    const label = document.createTextNode("Add your comment: ");
+                    labelElement.appendChild(label);
+                    labelCell.appendChild(labelElement);
+
+                    // add the input
+                    const commentInput = addCommentRow.insertCell();
+
+                    const inputArea = document.createElement("input");
+                    inputArea.placeholder = "Enter your comment";
+                    inputArea.id = "input" + tripID;
+                    inputArea.className = "commentInput";
+                    commentInput.appendChild(inputArea);
+
+                    if (Object.keys(data).length != 0) {
+                        for (let i = Object.keys(data).length-1; i >= 0; i--) {
+                            // create the comment row
+                            const row = table.insertRow();
+                            // create cell for username of commenter
+                            const userName = row.insertCell();
+                            // add the user name in
+                            const userNameInfo = document.createElement("h3");
+                            const userNameInfoText = document.createTextNode("Username: " + data[i].userName);
+                            userNameInfo.appendChild(userNameInfoText);
+                            userName.className = "commentUserName";
+                            userName.appendChild(userNameInfo);
+
+                            // create cell for the comment
+                            const comment = row.insertCell();
+                            // insert comment into cell
+                            const commentInfo = document.createElement("p");
+                            const commentInfoText = document.createTextNode(data[i].comment);
+                            commentInfo.appendChild(commentInfoText);
+                            comment.className = "userComment";
+                            comment.appendChild(commentInfo);
+                        }
+                    } else {
+                        const row = table.insertRow();
+                        row.insertCell();
+                        const cell = row.insertCell();
+
+                        const text = document.createElement("h1");
+                        const textInfo = document.createTextNode("No comments yet. Add one to let the user know what you think!");
+                        text.appendChild(textInfo);
+                        cell.appendChild(text);
+                        cell.style = "text-align: center";
+                    }
+                    span.appendChild(table);
+                    const container = document.getElementById(tripID);
+                    container.appendChild(span);
+
+                    const buttons = document.querySelectorAll('.labelForComment');
+                    buttons.forEach(button => button.addEventListener('click', event => {
+                        addComment(tripID);
+                    }))
+                });
+            } else {
+                var commentSection = document.getElementById("commentSection" + tripID);
+                commentSection.remove();
+            }
+        }
+
+        function addComment(tripID) {
+        const userID = JSON.parse(localStorage.getItem('userInfo')).userID;
+        var commentInfo = {
+            "usersID": parseInt(userID),
+            "tripID": parseInt(tripID),
+            "comment": document.getElementById("input" + tripID).value
+        };
+        fetch ("https://wefliapp-v1-3.onrender.com/trip/comment", {
+            method: "POST",
+            body: JSON.stringify(commentInfo),
+            headers: {'Content-Type' : 'application/json'}
+        }).then(res => {
+            var currentCommentSection = document.getElementById("commentSection" + tripID);
+            currentCommentSection.remove();
+
+            getComments(tripID);
+        })
+    }
+
         window.addEventListener('load', function() {
             displayTrips()
+            document.getElementById("settingsEmail").readOnly = true;
         });
     </script>
 

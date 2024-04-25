@@ -28,11 +28,26 @@
                 </td>
                 <td id="data">
                     <h3>List of activities:</h3>
-                    <ul>
-                        <li id="activity1">Item 1</li>
-                        <li id="activity2">Item 2</li>
-                        <li id="activity3">Item 3</li>
-                    </ul>
+                    <ol>
+                        <li id="activity1" value="1">Item 1</li>
+                        <li style="list-style-type: none;">
+                            <ul>
+                                <li id="activity1Description" style="list-style-type: none;">Description 1</li>
+                            </ul>
+                        </li>
+                        <li id="activity2" value="2">Item 2</li>
+                        <li style="list-style-type: none;">
+                            <ul>
+                                <li id="activity2Description" style="list-style-type: none;">Description 2</li>
+                            </ul>
+                        </li>
+                        <li id="activity3" value="3">Item 3</li>
+                        <li style="list-style-type: none;">
+                            <ul>
+                                <li id="activity3Description" style="list-style-type: none;">Description 3</li>
+                            </ul>
+                        </li>
+                    </ol>
 
                 </td>
             </tr>
@@ -72,11 +87,13 @@
         "images/Cities/Kentucky, Louisville.jpg",
         "images/Cities/Louisiana, New Orleans.jpg",
         "images/Cities/Maine, Portland.jpg",
+        "images/Cities/Washington DC.jpg",
         "images/Cities/Massachusetts, Boston.jpg",
         "images/Cities/Michigan, Detroit.jpg",
         "images/Cities/Minnesota, Minneapolis.jpg",
-        "images/Cities/Montana, Bozeman.jpg",
+        "images/Cities/Mississippi, Jackson.jpg",
         "images/Cities/Mossouri, St Louis.jpg",
+        "images/Cities/Montana, Bozeman.jpg",
         "images/Cities/Nebraska, Omaha.jpg",
         "images/Cities/Nevada, Las Vegas.jpg",
         "images/Cities/New Hamshire, Portsmouth.jpg",
@@ -97,7 +114,6 @@
         "images/Cities/Utah, Salt Lake City.jpg",
         "images/Cities/Vermont, Burlington.jpg",
         "images/Cities/Virginia, Newport News.jpg",
-        "images/Cities/Washington DC.jpg",
         "images/Cities/Washington, Seattle.jpg",
         "images/Cities/West Virginia, Bridgeport.jpg",
         "images/Cities/Wisconsin, Madison.jpg",
@@ -120,17 +136,19 @@
         "Maui, Hawaii",
         "Boise, Idaho",
         "Chicago, Illinois",
-        "Indiana, Indianapolis",
+        "Indianapolis, Indiana",
         "Des Moines, Iowa",
         "Kansas City, Kansas",
         "Louisville, Kentucky",
         "New Orleans, Louisiana",
         "Portland, Maine",
+        "Washington D.C.",
         "Boston, Massachusetts",
         "Detroit, Michigan",
         "Minneapolis, Minnesota",
-        "Bazeman, Montana",
-        "St Louis, Mossouri",
+        "Jackson, Mississippi",
+        "St Louis, Missouri",
+        "Bozeman, Montana",
         "Omaha, Nebraska",
         "Las Vegas, Nevada",
         "Portsmouth, New Hamshire",
@@ -151,7 +169,6 @@
         "Salt Lake City, Utah",
         "Burlington, Vermont",
         "Newport News, Virginia",
-        "Washington D.C.",
         "Seattle, Washington",
         "Bridgeport, West Virginia",
         "Madison, Wisconsin",
@@ -202,6 +219,7 @@
         }
 
     }
+
     like.onclick = function() {
         if (j != 0) {
             chosenActivities.push(activityNames[j - 1])
@@ -219,14 +237,45 @@
             pane.style.display = "none"
             buttons.style.display = "none"
 
+            var activitiesForRequest = []
+
+            for (let k = 0; k < 3; k++) {
+                switch(chosenActivities[k]) {
+                    case "Visit Something Obscure":
+                        activitiesForRequest.push("Obscure");
+                        break;
+                    case "Eat Local Food":
+                        activitiesForRequest.push("Food");
+                        break;
+                    case "Do Something Adventurous":
+                        activitiesForRequest.push("Adventureous");
+                        break;
+                    case "Relax Indoors":
+                        activitiesForRequest.push("Relaxing Indoors");
+                        break;
+                    case "Relax Outdoors":
+                        activitiesForRequest.push("Relaxing Outdoors");
+                        break;
+                    case "Visit Something Historical":
+                        activitiesForRequest.push("Historical");
+                        break;
+                    case "Family-Friendly Attraction":
+                        activitiesForRequest.push("Family-Friendly")
+                        break;
+                    case "Local Entertainment":
+                        activitiesForRequest.push("Entertainment");
+                        break;
+                }
+            }
+
             const user = JSON.parse(localStorage.getItem('userInfo'));
             var locationID = i;
             const tripInfo = {
                 "usersID": parseInt(user.userID),
                 "destinationID": locationID + 1,
-                "excursion1Tag": chosenActivities[0],
-                "excursion2Tag": chosenActivities[1],
-                "excursion3Tag": chosenActivities[2]
+                "excursion1Tag": activitiesForRequest[0],
+                "excursion2Tag": activitiesForRequest[1],
+                "excursion3Tag": activitiesForRequest[2]
             }
 
             fetch("https://wefliapp-v1-3.onrender.com/trip/createTrip", {
@@ -242,8 +291,11 @@
                 result.style.display = "block";
                 destination.innerText = chosenCity;
                 activity1.innerText = data.excursion1.excursionTitle;
+                activity1Description.innerText = data.excursion1.excursionDescription;
                 activity2.innerText = data.excursion2.excursionTitle;
+                activity2Description.innerText = data.excursion2.excursionDescription;
                 activity3.innerText = data.excursion3.excursionTitle;
+                activity3Description.innerText = data.excursion3.excursionDescription;
             })
         }
         j++
